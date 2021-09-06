@@ -1,5 +1,5 @@
 html {
-  background-color: rgba(84,51,255,.6);
+  background-color: rgb(249, 251, 252);
 }
 
 body {
@@ -10,8 +10,15 @@ h3 {
   font-size: 5rem;
 }
 
+h6 {
+  font-size: 3rem;
+}
+
 @media screen and (max-width: 500px) {
   h3 {
     font-size: 15vw;
+  }
+  h6 {
+    font-size: 10vw;
   }
 }

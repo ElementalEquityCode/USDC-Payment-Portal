@@ -1,7 +1,5 @@
 import React from 'react';
-import ValueEnteredLabel from '../ValueEnteredLabel/ValueEnteredLabel';
-import NumberPadButtonGrid from '../NumberPadButtonGrid/NumberPadButtonGrid';
-import NumberPadButton from '../NumberPadButton/NumberPadButton';
+import styles from './PaymentForm.module.css';
 
 class PaymentForm extends React.Component {
   constructor() {
@@ -13,11 +11,8 @@ class PaymentForm extends React.Component {
 
   render() {
     return (
-      <div>
-        <ValueEnteredLabel />
-        <NumberPadButtonGrid>
-          <NumberPadButton>1</NumberPadButton>
-        </NumberPadButtonGrid>
+      <div className={styles.paymentForm}>
+        <h1>Hello World</h1>
       </div>
     );
   }
