@@ -4,6 +4,8 @@ import CreditCardIcon from '@material-ui/icons/Subtitles';
 import CalendarIcon from '@material-ui/icons/Today';
 import NumberIcon from '@material-ui/icons/FormatListNumbered';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
+import NameContext from '../../Contexts/NameContext';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import Grid from '../Grid/Grid';
 import styles from './PaymentForm.module.css';
@@ -13,31 +15,50 @@ class PaymentForm extends React.Component {
     super();
 
     this.state = {
-
+      name: ''
     };
   }
 
+  handleNameChanged = (event) => {
+    this.setState({
+      name: event.target.value
+    });
+  }
+
   render() {
+    const { name } = this.state;
+
     return (
-      <Grid
-        columns="one"
+      <div
         className={styles.overallGrid}
       >
         <div className={styles.paymentForm}>
-          <SectionLabel>Client Information</SectionLabel>
+          <SectionLabel
+            type="dark"
+          >
+            Client Information
+          </SectionLabel>
           <Grid
             columns="one"
           >
             <TextField
+              value={name}
               label="Name on Card"
               fullWidth
+              onChange={(event) => {
+                this.handleNameChanged(event);
+              }}
             />
             <TextField
               label="Email"
               fullWidth
             />
           </Grid>
-          <SectionLabel>Card Information</SectionLabel>
+          <SectionLabel
+            type="dark"
+          >
+            Card Information
+          </SectionLabel>
           <Grid
             colums="one"
           >
@@ -82,7 +103,12 @@ class PaymentForm extends React.Component {
             </Button>
           </div>
         </div>
-      </Grid>
+        <div className={styles.amountToPayForm}>
+          <NameContext.Provider value={name}>
+            <AmountToPayForm />
+          </NameContext.Provider>
+        </div>
+      </div>
     );
   }
 }

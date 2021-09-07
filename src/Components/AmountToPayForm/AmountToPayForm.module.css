@@ -1,0 +1,11 @@
+.amountToPayForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-row-gap: 20px;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, rgb(92, 69, 203), rgb(67, 52, 189));
+    margin-top: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
