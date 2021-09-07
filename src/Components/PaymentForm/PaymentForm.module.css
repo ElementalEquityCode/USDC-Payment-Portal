@@ -10,8 +10,7 @@
 }
 
 .buttonContainer {
-    margin-left: auto;
-    margin-right: 20px;
+    margin: 0 20px 14px auto;
     width: 150px;
     box-sizing: border-box;
 }
@@ -34,4 +33,10 @@
 
 .payButton {
     background-color: red;
+}
+
+@media screen and (max-width: 700px) {
+    .paymentForm {
+        width: 80vw;
+    }
 }

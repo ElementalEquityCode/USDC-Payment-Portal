@@ -9,13 +9,13 @@
     grid-row-gap: 20px;
 }
 
-.three {
-    grid-template-columns: repeat(3, 1fr);
+.two {
+    grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 20px;
 }
 
 @media screen and (max-width: 900px) {
-    .three {
+    .two {
         grid-template-columns: 1fr;
         grid-column-gap: 0;
         grid-row-gap: 20px;

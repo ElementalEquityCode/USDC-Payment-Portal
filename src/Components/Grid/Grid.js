@@ -6,9 +6,9 @@ const Grid = (props) => {
   const { children } = props;
   const { columns } = props;
 
-  if (columns === 'three') {
+  if (columns === 'two') {
     return (
-      <div className={`${styles.grid} ${styles.three}`}>
+      <div className={`${styles.grid} ${styles.two}`}>
         {children}
       </div>
     );
