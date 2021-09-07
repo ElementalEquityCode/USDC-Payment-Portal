@@ -1,7 +1,7 @@
 .grid {
     display: grid;
     padding: 0 20px;
-    margin-bottom: 14px;
+    margin-bottom: 30px;
 }
 
 .one {
@@ -17,5 +17,7 @@
 @media screen and (max-width: 900px) {
     .three {
         grid-template-columns: 1fr;
+        grid-column-gap: 0;
+        grid-row-gap: 20px;
     }
 }
