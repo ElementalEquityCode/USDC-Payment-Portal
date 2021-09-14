@@ -1,12 +1,12 @@
 .paymentFromTo {
     box-sizing: border-box;
     padding: 20px;
-    border-radius: 4px;
 }
 
 .innerContainer {
     background-color: rgb(86, 70, 218);
     padding: 20px;
+    border-radius: 4px;
 }
 
 .text {
