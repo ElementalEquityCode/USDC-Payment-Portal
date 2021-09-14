@@ -1,0 +1,9 @@
+.generalActionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1875cd;
+    text-align: center;
+    color: white;
+    height: 52px;
+}

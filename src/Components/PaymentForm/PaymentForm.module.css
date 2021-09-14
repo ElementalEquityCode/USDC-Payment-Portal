@@ -24,28 +24,6 @@
     box-sizing: border-box;
 }
 
-.buttonContainer {
-    margin: 0 20px 14px auto;
-    width: 150px;
-    box-sizing: border-box;
-}
-
-.buttonContainer * {
-    width: 150px;
-}
-
-@media screen and (max-width: 900px) {
-    .buttonContainer {
-        width: 100%;
-        padding: 0 20px;
-    }
-
-    .buttonContainer * {
-        margin: 0;
-        width: 100%;
-    }
-}
-
 .payButton {
     background-color: red;
 }
