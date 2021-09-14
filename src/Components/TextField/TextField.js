@@ -25,6 +25,7 @@ class TextField extends React.Component {
   render() {
     const { isFocused } = this.state;
     const { placeholder } = this.props;
+    const { onChangeEvent } = this.props;
 
     return (
       <div className={isFocused ? `${styles.textFieldContainer} ${styles.focused}` : `${styles.textFieldContainer}`}>
@@ -34,6 +35,11 @@ class TextField extends React.Component {
           placeholder={placeholder}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
+          onChange={(event) => {
+            if (onChangeEvent !== undefined) {
+              onChangeEvent(event);
+            }
+          }}
         />
       </div>
     );
@@ -41,7 +47,8 @@ class TextField extends React.Component {
 }
 
 TextField.propTypes = {
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  onChangeEvent: PropTypes.func
 };
 
 export default TextField;

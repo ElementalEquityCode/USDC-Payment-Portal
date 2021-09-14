@@ -8,8 +8,8 @@
 
 @media screen and (max-width: 800px) {
     .overallGrid {
-        width: 90%;
         flex-direction: column;
+        width: 90%;
     }
 }
 
@@ -30,7 +30,6 @@
 
 @media screen and (max-width: 800px) {
     .paymentForm {
-        display: block;
         width: 80%;
         margin: 0 auto;
     }
@@ -44,7 +43,6 @@
 
 @media screen and (max-width: 800px) {
     .amountToPayForm {
-        display: block;
         width: 70%;
         margin: 0 auto;
     }

@@ -4,7 +4,6 @@ import ValuesContext from '../../Contexts/ValuesContext';
 import TodaysDate from '../TodaysDate/TodaysDate';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import TextField from '../TextField/TextField';
-import GeneralActionButton from '../GeneralActionButton/GeneralActionButton';
 import Grid from '../Grid/Grid';
 import styles from './PaymentForm.module.css';
 
@@ -45,6 +44,7 @@ class PaymentForm extends React.Component {
             </SectionLabel>
             <TextField
               placeholder="Name"
+              onChangeEvent={this.handleNameChanged}
             />
             <TextField
               placeholder="Email"
@@ -67,7 +67,6 @@ class PaymentForm extends React.Component {
             <TextField
               placeholder="CVC"
             />
-            <GeneralActionButton>Enter Amount to Pay</GeneralActionButton>
           </Grid>
         </div>
         <div className={styles.amountToPayForm}>

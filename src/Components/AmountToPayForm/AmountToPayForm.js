@@ -4,6 +4,7 @@ import Grid from '../Grid/Grid';
 import AmountToPayTextField from '../AmountToPayTextField/AmountToPayTextField';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import PaymentFromTo from '../PaymentFromTo/PaymentFromTo';
+import GeneralActionButton from '../GeneralActionButton/GeneralActionButton';
 
 class AmountToPayForm extends React.Component {
   constructor() {
@@ -28,6 +29,8 @@ class AmountToPayForm extends React.Component {
           <PaymentFromTo
             to="Ian Robinson"
           />
+
+          <GeneralActionButton>Enter Amount to Pay</GeneralActionButton>
         </Grid>
       </div>
     );

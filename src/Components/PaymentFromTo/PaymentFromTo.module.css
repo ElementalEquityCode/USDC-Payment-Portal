@@ -3,12 +3,12 @@
 }
 
 .innerContainer {
-    background-color: rgb(86, 70, 218);
+    background-color: #f2f4f8;
     padding: 20px;
     border-radius: 4px;
 }
 
 .text {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgb(65, 71, 78);
     word-break: break-all;
 }
