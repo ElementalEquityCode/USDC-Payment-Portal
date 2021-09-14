@@ -6,13 +6,12 @@
     border-radius: 4px;
     transition: background-color 0.15s ease-out;
     height: 53px;
-    width: calc(100% - 40px);
-    margin-left: 20px;
+    width: 100%;
     box-shadow: 0 0 0 1px #e0e0e0, 0 2px 4px 0 rgb(0 0 0 / 7%), 0 1px 1.5px 0 rgb(0 0 0 / 5%);
 }
 
 .focused {
-    background-color: rgba(247, 205, 98);
+    background-color: rgb(165,202,230);
 }
 
 .dollarSignContainer {

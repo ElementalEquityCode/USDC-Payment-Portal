@@ -6,4 +6,9 @@
     text-align: center;
     color: white;
     height: 52px;
+    border-radius: 4px;
+}
+
+.generalActionButton:hover {
+    cursor: pointer;
 }

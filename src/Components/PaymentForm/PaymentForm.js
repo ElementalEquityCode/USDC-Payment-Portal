@@ -67,8 +67,8 @@ class PaymentForm extends React.Component {
             <TextField
               placeholder="CVC"
             />
+            <GeneralActionButton>Enter Amount to Pay</GeneralActionButton>
           </Grid>
-          <GeneralActionButton>Enter Amount to Pay</GeneralActionButton>
         </div>
         <div className={styles.amountToPayForm}>
           <ValuesContext.Provider value={name}>

@@ -1,21 +1,21 @@
 .overallGrid {
-    display: grid;
+    display: flex;
+    align-items: center;
     margin: 0 auto;
     width: 70%;
-    grid-template-columns: 1fr 0.5fr;
-    grid-gap: 40px;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 10px 0;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
     .overallGrid {
         width: 90%;
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
 }
 
 .paymentForm {
+    width: 60%;
+    margin-right: 2.5%;
     background-color: white;
     box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 25%), 0 5px 15px 0 rgb(0 0 0 / 15%);
     padding: 10px;
@@ -28,13 +28,24 @@
     background-color: red;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
     .paymentForm {
-        width: 80vw;
+        display: block;
+        width: 80%;
+        margin: 0 auto;
     }
 }
 
 .amountToPayForm {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-    height: 50%;
+    margin-left: 2.5%;
+    width: 35%;
+}
+
+@media screen and (max-width: 800px) {
+    .amountToPayForm {
+        display: block;
+        width: 70%;
+        margin: 0 auto;
+    }
 }

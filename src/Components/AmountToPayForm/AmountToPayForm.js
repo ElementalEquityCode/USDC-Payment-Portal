@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './AmountToPayForm.module.css';
+import Grid from '../Grid/Grid';
 import AmountToPayTextField from '../AmountToPayTextField/AmountToPayTextField';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import PaymentFromTo from '../PaymentFromTo/PaymentFromTo';
@@ -15,17 +16,19 @@ class AmountToPayForm extends React.Component {
   render() {
     return (
       <div className={styles.amountToPayForm}>
-        <SectionLabel
-          type="light"
-        >
-          Enter Amount to Pay
-        </SectionLabel>
+        <Grid>
+          <SectionLabel
+            type="dark"
+          >
+            Enter Amount to Pay
+          </SectionLabel>
 
-        <AmountToPayTextField />
+          <AmountToPayTextField />
 
-        <PaymentFromTo
-          to="Ian Robinson"
-        />
+          <PaymentFromTo
+            to="Ian Robinson"
+          />
+        </Grid>
       </div>
     );
   }
