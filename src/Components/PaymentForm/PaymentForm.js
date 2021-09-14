@@ -3,6 +3,7 @@ import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
 import TodaysDate from '../TodaysDate/TodaysDate';
 import SectionLabel from '../SectionLabel/SectionLabel';
+import TextField from '../TextField/TextField';
 import Grid from '../Grid/Grid';
 import styles from './PaymentForm.module.css';
 
@@ -34,23 +35,41 @@ class PaymentForm extends React.Component {
       >
         <div className={styles.paymentForm}>
           <TodaysDate />
-          <SectionLabel
-            type="dark"
-          >
-            Client Information
-          </SectionLabel>
           <Grid
             columns="one"
           >
-            <h1>Text</h1>
+            <SectionLabel
+              type="dark"
+            >
+              Client Information
+            </SectionLabel>
+            <TextField
+              placeholder="Name"
+            />
+            <TextField
+              placeholder="Email"
+            />
           </Grid>
           <Grid
-            columns="two"
+            columns="one"
           >
-            <h1>Text</h1>
+            <SectionLabel
+              type="dark"
+            >
+              Card Information
+            </SectionLabel>
+            <TextField
+              placeholder="1234 1234 1234 1234"
+            />
+            <TextField
+              placeholder="MM/YY"
+            />
+            <TextField
+              placeholder="CVC"
+            />
           </Grid>
           <div className={styles.buttonContainer}>
-            <h1>Text</h1>
+            <h1>Button Here</h1>
           </div>
         </div>
         <div className={styles.amountToPayForm}>

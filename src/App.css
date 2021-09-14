@@ -18,6 +18,12 @@ p {
   font-size: 0.9rem;
 }
 
+input {
+  font-size: 0.9rem;
+  color: rgba(26, 26, 26, 0.9);
+  font-weight: 300;
+}
+
 @media screen and (max-width: 500px) {
   h3 {
     font-size: 15vw;
