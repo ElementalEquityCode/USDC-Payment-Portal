@@ -10,7 +10,11 @@ class ExclamationError extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.ref.current);
+    if (this.ref.current) {
+      setTimeout(() => {
+        this.ref.current.classList.add(`${styles.visible}`);
+      }, 0);
+    }
   }
 
   render() {
