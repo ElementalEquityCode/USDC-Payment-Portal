@@ -1,0 +1,29 @@
+.exclamationErrorContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+    position: relative;
+    right: 10px;
+    bottom: 28px;
+    width: 15px;
+    height: 15px;
+    border-radius: 7.5px;
+    border: 1px solid #eb382a;
+    pointer-events: none;
+    transform: scale(0, 0);
+    transition: transform 0.15s ease-out;
+}
+
+.visible {
+    transform: scale(1, 1);
+}
+
+.exclamationErrorContainer:hover {
+    cursor: text;
+}
+
+.exclamationError {
+    color: #eb382a;
+    font-size: 12px;
+}

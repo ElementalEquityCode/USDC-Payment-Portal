@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './TextField.module.css';
+import ExclamationError from '../ExclamationError/ExclamationError';
 
 const validator = require('email-validator');
 
@@ -26,7 +27,7 @@ class TextField extends React.Component {
 
     if (type === 'name') {
       this.setState({
-        isInErrorState: value === '',
+        isInErrorState: value.trim() === '',
         isFocused: false
       });
     } else if (type === 'email') {
@@ -76,6 +77,7 @@ class TextField extends React.Component {
             });
           }}
         />
+        {isInErrorState && !isFocused ? <ExclamationError /> : null}
       </div>
     );
   }
