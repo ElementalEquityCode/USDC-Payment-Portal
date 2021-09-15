@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './AmountToPayTextField.module.css';
 import ExclamationError from '../ExclamationError/ExclamationError';
+import ValuesContext from '../../Contexts/ValuesContext';
 
 class AmountToPayTextField extends React.Component {
   constructor() {
@@ -42,7 +43,7 @@ class AmountToPayTextField extends React.Component {
     });
   }
 
-  handleTextChange = (event) => {
+  handleTextChange = (event, consumerValue) => {
     const regex = /^(([1-9]{1}\d{0,2})?)$/;
 
     if (!regex.test(event.target.value)) {
@@ -51,6 +52,9 @@ class AmountToPayTextField extends React.Component {
     } else {
       this.setState({
         value: event.target.value
+      }, () => {
+        const { value } = this.state;
+        consumerValue.handleAmountEnteredChanged(value);
       });
     }
   }
@@ -87,18 +91,22 @@ class AmountToPayTextField extends React.Component {
           <div className={styles.dollarSignContainer}>
             <span className={styles.dollarSign}>$</span>
           </div>
-          <input
-            value={value}
-            type="text"
-            className={styles.amountToPayTextField}
-            placeholder="0.00"
-            onFocus={this.handleAmountToPayTextFieldSetFocused}
-            onBlur={this.handleAmountToPayTextFieldBlured}
-            ref={this.amountToPayTextFieldRef}
-            onChange={(event) => {
-              this.handleTextChange(event);
-            }}
-          />
+          <ValuesContext.Consumer>
+            {(consumerValue) => (
+              <input
+                value={value}
+                type="text"
+                className={styles.amountToPayTextField}
+                placeholder="0.00"
+                onFocus={this.handleAmountToPayTextFieldSetFocused}
+                onBlur={this.handleAmountToPayTextFieldBlured}
+                ref={this.amountToPayTextFieldRef}
+                onChange={(event) => {
+                  this.handleTextChange(event, consumerValue);
+                }}
+              />
+            )}
+          </ValuesContext.Consumer>
         </div>
         <ExclamationError shouldDisplay={isInErrorState && !isFocused} />
       </div>

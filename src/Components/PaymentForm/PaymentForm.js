@@ -12,8 +12,15 @@ class PaymentForm extends React.Component {
     super();
 
     this.state = {
-      name: ''
+      name: '',
+      amountEntered: ''
     };
+  }
+
+  handleAmountEnteredChanged = (value) => {
+    this.setState({
+      amountEntered: value
+    });
   }
 
   handleNameChanged = (event) => {
@@ -22,10 +29,8 @@ class PaymentForm extends React.Component {
     });
   }
 
-  handleAmountEnteredChanged = () => {
-  }
-
   render() {
+    const { amountEntered } = this.state;
     const { name } = this.state;
 
     return (
@@ -72,7 +77,12 @@ class PaymentForm extends React.Component {
           </Grid>
         </div>
         <div className={styles.amountToPayForm}>
-          <ValuesContext.Provider value={name}>
+          <ValuesContext.Provider value={{
+            name,
+            handleAmountEnteredChanged: this.handleAmountEnteredChanged,
+            amountEntered
+          }}
+          >
             <AmountToPayForm />
           </ValuesContext.Provider>
         </div>
