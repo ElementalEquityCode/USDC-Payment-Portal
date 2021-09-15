@@ -43,10 +43,12 @@ class PaymentForm extends React.Component {
               Client Information
             </SectionLabel>
             <TextField
+              type="name"
               placeholder="Name"
               onChangeEvent={this.handleNameChanged}
             />
             <TextField
+              type="email"
               placeholder="Email"
             />
           </Grid>

@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './TextField.module.css';
 
+const validator = require('email-validator');
+
 class TextField extends React.Component {
   constructor() {
     super();
     this.state = {
-      isFocused: false
+      value: '',
+      isFocused: false,
+      isInErrorState: false
     };
   }
 
@@ -17,18 +21,45 @@ class TextField extends React.Component {
   }
 
   handleBlur = () => {
-    this.setState({
-      isFocused: false
-    });
+    const { type } = this.props;
+    const { value } = this.state;
+
+    if (type === 'name') {
+      this.setState({
+        isInErrorState: value === '',
+        isFocused: false
+      });
+    } else if (type === 'email') {
+      this.setState({
+        isInErrorState: !validator.validate(value.trim()),
+        isFocused: false
+      });
+    } else {
+      this.setState({
+        isInErrorState: false,
+        isFocused: false
+      });
+    }
   }
 
   render() {
+    const { isInErrorState } = this.state;
     const { isFocused } = this.state;
     const { placeholder } = this.props;
     const { onChangeEvent } = this.props;
 
+    let textFieldContainerClassNames = '';
+
+    if (isFocused) {
+      textFieldContainerClassNames = `${styles.textFieldContainer} ${styles.focused}`;
+    } else if (isInErrorState) {
+      textFieldContainerClassNames = `${styles.textFieldContainer} ${styles.error}`;
+    } else {
+      textFieldContainerClassNames = `${styles.textFieldContainer}`;
+    }
+
     return (
-      <div className={isFocused ? `${styles.textFieldContainer} ${styles.focused}` : `${styles.textFieldContainer}`}>
+      <div className={textFieldContainerClassNames}>
         <input
           className={styles.textField}
           type="text"
@@ -39,6 +70,10 @@ class TextField extends React.Component {
             if (onChangeEvent !== undefined) {
               onChangeEvent(event);
             }
+
+            this.setState({
+              value: event.target.value
+            });
           }}
         />
       </div>
@@ -47,6 +82,7 @@ class TextField extends React.Component {
 }
 
 TextField.propTypes = {
+  type: PropTypes.string,
   placeholder: PropTypes.string,
   onChangeEvent: PropTypes.func
 };

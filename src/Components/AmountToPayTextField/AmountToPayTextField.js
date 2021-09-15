@@ -8,7 +8,8 @@ class AmountToPayTextField extends React.Component {
     this.amountToPayTextFieldRef = React.createRef(null);
     this.state = {
       isFocused: false,
-      enteredValue: ''
+      isInErrorState: false,
+      value: ''
     };
   }
 
@@ -32,8 +33,11 @@ class AmountToPayTextField extends React.Component {
   }
 
   handleAmountToPayTextFieldBlured = () => {
+    const { value } = this.state;
+
     this.setState({
-      isFocused: false
+      isFocused: false,
+      isInErrorState: value === ''
     });
   }
 
@@ -45,18 +49,29 @@ class AmountToPayTextField extends React.Component {
       });
     } else {
       this.setState({
-        enteredValue: event.target.value
+        value: event.target.value
       });
     }
   }
 
   render() {
-    const { enteredValue } = this.state;
+    const { isInErrorState } = this.state;
+    const { value } = this.state;
     const { isFocused } = this.state;
+
+    let amountToPayTextFiedlContainerClassNames = '';
+
+    if (isFocused) {
+      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.focused}`;
+    } else if (isInErrorState) {
+      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.error}`;
+    } else {
+      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer}`;
+    }
 
     return (
       <div
-        className={isFocused ? `${styles.amountToPayTextFieldContainer} ${styles.focused}` : `${styles.amountToPayTextFieldContainer}`}
+        className={amountToPayTextFiedlContainerClassNames}
         onMouseDown={(event) => {
           if (!isFocused) {
             this.handleAmountToPayTextFieldContainerClicked();
@@ -71,7 +86,7 @@ class AmountToPayTextField extends React.Component {
           <span className={styles.dollarSign}>$</span>
         </div>
         <input
-          value={enteredValue}
+          value={value}
           type="text"
           className={styles.amountToPayTextField}
           placeholder="0.00"
