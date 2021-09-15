@@ -7,12 +7,15 @@ import TextField from '../TextField/TextField';
 import Grid from '../Grid/Grid';
 import styles from './PaymentForm.module.css';
 
+const validator = require('email-validator');
+
 class PaymentForm extends React.Component {
   constructor() {
     super();
 
     this.state = {
       name: '',
+      email: '',
       amountEntered: ''
     };
   }
@@ -20,13 +23,37 @@ class PaymentForm extends React.Component {
   handleAmountEnteredChanged = (value) => {
     this.setState({
       amountEntered: value
+    }, () => {
+      this.checkIfFormIsComplete();
+    });
+  }
+
+  handleEmailChanged = (event) => {
+    this.setState({
+      email: event.target.value
+    }, () => {
+      this.checkIfFormIsComplete();
     });
   }
 
   handleNameChanged = (event) => {
     this.setState({
       name: event.target.value
+    }, () => {
+      this.checkIfFormIsComplete();
     });
+  }
+
+  checkIfFormIsComplete = () => {
+    const { name } = this.state;
+    const { email } = this.state;
+    const { amountEntered } = this.state;
+
+    if (name.trim() !== '' && validator.validate(email.trim()) && amountEntered !== '') {
+      console.log('Form is complete');
+    } else {
+      console.log('Form is incomplete');
+    }
   }
 
   render() {
@@ -55,6 +82,7 @@ class PaymentForm extends React.Component {
             <TextField
               type="email"
               placeholder="Email"
+              onChangeEvent={this.handleEmailChanged}
             />
           </Grid>
           <Grid
