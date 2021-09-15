@@ -2,10 +2,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    float: right;
-    position: relative;
-    right: 10px;
-    bottom: 28px;
     width: 15px;
     height: 15px;
     border-radius: 7.5px;
@@ -13,6 +9,20 @@
     pointer-events: none;
     transform: scale(0, 0);
     transition: transform 0.15s ease-out;
+}
+
+.forTextField {
+    float: right;
+    position: relative;
+    right: 10px;
+    bottom: 28px;
+}
+
+.forAmountToPayTextField {
+    float: right;
+    position: relative;
+    right: 10px;
+    bottom: 34px;
 }
 
 .visible {

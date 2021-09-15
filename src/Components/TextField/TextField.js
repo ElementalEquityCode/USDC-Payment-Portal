@@ -77,7 +77,7 @@ class TextField extends React.Component {
             });
           }}
         />
-        {isInErrorState && !isFocused ? <ExclamationError /> : null}
+        <ExclamationError labelType="TextField" shouldDisplay={isInErrorState && !isFocused} />
       </div>
     );
   }

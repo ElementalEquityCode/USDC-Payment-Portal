@@ -1,3 +1,7 @@
+.container {
+    height: 53px;
+}
+
 .amountToPayTextFieldContainer {
     display: flex;
     align-items: center;
@@ -47,3 +51,12 @@
     padding: 0 10px;
 }
 
+.visible {
+    opacity: 1;
+    transition: opacity 0.15s ease-out;
+}
+
+.hidden {
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+}

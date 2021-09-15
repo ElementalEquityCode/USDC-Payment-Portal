@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './AmountToPayTextField.module.css';
+import ExclamationError from '../ExclamationError/ExclamationError';
 
 class AmountToPayTextField extends React.Component {
   constructor() {
@@ -70,33 +71,36 @@ class AmountToPayTextField extends React.Component {
     }
 
     return (
-      <div
-        className={amountToPayTextFiedlContainerClassNames}
-        onMouseDown={(event) => {
-          if (!isFocused) {
-            this.handleAmountToPayTextFieldContainerClicked();
-            event.preventDefault();
-          }
-        }}
-        onKeyDown={this.handleAmountToPayTextFieldContainerClicked}
-        role="textbox"
-        tabIndex={0}
-      >
-        <div className={styles.dollarSignContainer}>
-          <span className={styles.dollarSign}>$</span>
-        </div>
-        <input
-          value={value}
-          type="text"
-          className={styles.amountToPayTextField}
-          placeholder="0.00"
-          onFocus={this.handleAmountToPayTextFieldSetFocused}
-          onBlur={this.handleAmountToPayTextFieldBlured}
-          ref={this.amountToPayTextFieldRef}
-          onChange={(event) => {
-            this.handleTextChange(event);
+      <div className={styles.container}>
+        <div
+          className={amountToPayTextFiedlContainerClassNames}
+          onMouseDown={(event) => {
+            if (!isFocused) {
+              this.handleAmountToPayTextFieldContainerClicked();
+              event.preventDefault();
+            }
           }}
-        />
+          onKeyDown={this.handleAmountToPayTextFieldContainerClicked}
+          role="textbox"
+          tabIndex={0}
+        >
+          <div className={styles.dollarSignContainer}>
+            <span className={styles.dollarSign}>$</span>
+          </div>
+          <input
+            value={value}
+            type="text"
+            className={styles.amountToPayTextField}
+            placeholder="0.00"
+            onFocus={this.handleAmountToPayTextFieldSetFocused}
+            onBlur={this.handleAmountToPayTextFieldBlured}
+            ref={this.amountToPayTextFieldRef}
+            onChange={(event) => {
+              this.handleTextChange(event);
+            }}
+          />
+        </div>
+        <ExclamationError shouldDisplay={isInErrorState && !isFocused} />
       </div>
     );
   }
