@@ -16,7 +16,8 @@ class PaymentForm extends React.Component {
     this.state = {
       name: '',
       email: '',
-      amountEntered: ''
+      amountEntered: '',
+      isFormComplete: false
     };
   }
 
@@ -50,13 +51,22 @@ class PaymentForm extends React.Component {
     const { amountEntered } = this.state;
 
     if (name.trim() !== '' && validator.validate(email.trim()) && amountEntered !== '') {
-      console.log('Form is complete');
+      this.setState({
+        isFormComplete: true
+      });
     } else {
-      console.log('Form is incomplete');
+      this.setState({
+        isFormComplete: false
+      });
     }
   }
 
+  formCompletionHandler = () => {
+    console.log('clicked');
+  }
+
   render() {
+    const { isFormComplete } = this.state;
     const { amountEntered } = this.state;
     const { name } = this.state;
 
@@ -108,7 +118,9 @@ class PaymentForm extends React.Component {
           <ValuesContext.Provider value={{
             name,
             handleAmountEnteredChanged: this.handleAmountEnteredChanged,
-            amountEntered
+            amountEntered,
+            isFormComplete,
+            formCompletionHandler: this.formCompletionHandler
           }}
           >
             <AmountToPayForm />

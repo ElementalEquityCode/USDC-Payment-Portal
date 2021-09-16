@@ -1,3 +1,14 @@
+.generalActionButtonContainer {
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease-out;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.clicked {
+    background-color: rgb(197, 217, 235);
+}
+
 .generalActionButton {
     display: flex;
     align-items: center;
@@ -7,8 +18,24 @@
     color: white;
     height: 52px;
     border-radius: 4px;
+    transition: color 0.15s ease-out;
+}
+
+.incompleteForm {
+    color: hsla(0,0%,100%,.6);
 }
 
 .generalActionButton:hover {
     cursor: pointer;
+}
+
+.lockIcon {
+    width: 12.5px;
+    position: relative;
+    transform: scale(0, 0);
+    transition: transform 0.15s ease-out;
+}
+
+.visible {
+    transform: scale(1, 1);
 }

@@ -1,17 +1,58 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './GeneralActionButton.module.css';
 import ValuesContext from '../../Contexts/ValuesContext';
+import Lock from '../../Assets/lock.svg';
 
 const GeneralActionButton = (props) => {
-  const { amountEntered } = useContext(ValuesContext);
+  const [isClicked, setClickedState] = useState(false);
+
+  const values = useContext(ValuesContext);
+  const { amountEntered } = values;
+  const { isFormComplete } = values;
+  const { formCompletionHandler } = values;
   const { children } = props;
+
+  let generalActionButtonClassNames = '';
+
+  if (isFormComplete) {
+    generalActionButtonClassNames = `${styles.generalActionButton}`;
+  } else {
+    generalActionButtonClassNames = `${styles.generalActionButton} ${styles.incompleteForm}`;
+  }
 
   return (
     <div
-      className={styles.generalActionButton}
+      className={!isClicked ? `${styles.generalActionButtonContainer}` : `${styles.generalActionButtonContainer} ${styles.clicked}`}
+      onMouseDown={() => {
+        setClickedState(true);
+      }}
+      onMouseUp={() => {
+        setClickedState(false);
+      }}
+      onMouseLeave={() => {
+        setClickedState(false);
+      }}
+      onClick={() => {
+        formCompletionHandler();
+      }}
+      onKeyDown={() => {
+      }}
+      role="button"
+      tabIndex={0}
     >
-      {amountEntered !== '' ? `Pay $${amountEntered}.00` : children}
+      <div
+        className={generalActionButtonClassNames}
+      >
+        <span>
+          {amountEntered !== '' ? `Pay $${amountEntered}.00` : children}
+        </span>
+        <img
+          className={isFormComplete ? `${styles.lockIcon} ${styles.visible}` : `${styles.lockIcon}`}
+          alt=""
+          src={Lock}
+        />
+      </div>
     </div>
   );
 };
