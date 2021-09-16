@@ -82,6 +82,10 @@ class AmountToPayTextField extends React.Component {
             if (!isFocused) {
               this.handleAmountToPayTextFieldContainerClicked();
               event.preventDefault();
+            } else if (isFocused) {
+              if (event.target !== this.amountToPayTextFieldRef.current) {
+                event.preventDefault();
+              }
             }
           }}
           onKeyDown={this.handleAmountToPayTextFieldContainerClicked}

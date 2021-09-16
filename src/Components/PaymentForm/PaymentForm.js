@@ -62,7 +62,11 @@ class PaymentForm extends React.Component {
   }
 
   formCompletionHandler = () => {
-    console.log('clicked');
+    const { isFormComplete } = this.state;
+
+    if (isFormComplete) {
+      console.log('Perform API request');
+    }
   }
 
   render() {
