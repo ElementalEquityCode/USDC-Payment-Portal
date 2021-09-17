@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import { v4 as UUID } from 'uuid';
 import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
 import TodaysDate from '../TodaysDate/TodaysDate';
@@ -7,6 +9,7 @@ import TextField from '../TextField/TextField';
 import Grid from '../Grid/Grid';
 import styles from './PaymentForm.module.css';
 
+const openPGP = require('openpgp');
 const validator = require('email-validator');
 
 class PaymentForm extends React.Component {
@@ -14,6 +17,10 @@ class PaymentForm extends React.Component {
     super();
 
     this.state = {
+      key: {
+        keyId: '',
+        publicKey: ''
+      },
       name: '',
       email: '',
       amountEntered: '',
@@ -65,8 +72,79 @@ class PaymentForm extends React.Component {
     const { isFormComplete } = this.state;
 
     if (isFormComplete) {
-      console.log('Perform API request');
+      this.createCard();
     }
+  }
+
+  createCard = async () => {
+    const { key } = this.state;
+    const { keyId } = key;
+    const { publicKey } = key;
+
+    const payload = {
+      idempotencyKey: UUID(),
+      keyId,
+      encryptedData: '',
+      billingDetails: {
+        name: 'Daniel Valencia',
+        city: 'Doral',
+        country: 'US',
+        line1: '11133 NW 71st Ter',
+        district: 'FL',
+        postalCode: '33178'
+      },
+      expMonth: 12,
+      expYear: 2022,
+      metaData: {
+        email: 'valencia.0.daniel@gmail.com',
+        sessionId: UUID(),
+        ipAddress: '244.28.239.130'
+      }
+    };
+
+    const cardDetails = {
+      number: '4007400000000007',
+      cvv: '123'
+    };
+
+    payload.encryptedData = await this.encryptCardData(cardDetails, publicKey, keyId);
+
+    const requestOptions = {
+      data: {
+        payload
+      }
+    };
+
+    axios.post('/create-card-payment', requestOptions).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  encryptCardData = async (cardDetails, key, keyId) => {
+    const decodedPublicKey = atob(key);
+    const options = {
+      message: await openPGP.createMessage({ text: JSON.stringify(cardDetails) }),
+      encryptionKeys: await openPGP.readKey({ armoredKey: decodedPublicKey })
+    };
+
+    return openPGP.encrypt(options).then((cipherText) => (
+      {
+        encryptedData: btoa(cipherText.data),
+        keyId
+      }
+    ));
+  }
+
+  componentDidMount = () => {
+    axios.get('/key').then((response) => {
+      this.setState({
+        key: response.data
+      });
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   render() {
