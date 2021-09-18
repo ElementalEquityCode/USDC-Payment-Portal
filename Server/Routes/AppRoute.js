@@ -2,29 +2,29 @@ const express = require('express');
 const appRouter = express.Router();
 
 getReactAppFilePath = () => {
-    let paths = __dirname.split('/');
+  let paths = __dirname.split('/');
 
-    paths.pop();
-    paths.pop();
-    paths.push('Client');
-    paths.push('build');
-    paths.push('index.html');
+  paths.pop();
+  paths.pop();
+  paths.push('Client');
+  paths.push('build');
+  paths.push('index.html');
 
-    return paths.join('/');
+  return paths.join('/');
 };
 
 getReactFolderPath = () => {
-    let paths = getReactAppFilePath().split('/');
+  let paths = getReactAppFilePath().split('/');
 
-    paths.pop();
+  paths.pop();
 
-    return paths.join('/');
+  return paths.join('/');
 }
 
 appRouter.use(express.static(getReactFolderPath()));
 
 appRouter.get('*', (req, res) => {
-    res.sendFile(getReactAppFilePath());
+  res.sendFile(getReactAppFilePath());
 });
 
 module.exports = appRouter;

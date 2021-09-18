@@ -77,6 +77,7 @@ class PaymentForm extends React.Component {
   }
 
   createCard = async () => {
+    const { amountEntered } = this.state;
     const { key } = this.state;
     const { keyId } = key;
     const { publicKey } = key;
@@ -95,19 +96,25 @@ class PaymentForm extends React.Component {
       },
       expMonth: 12,
       expYear: 2022,
-      metaData: {
+      metadata: {
         email: 'valencia.0.daniel@gmail.com',
         sessionId: UUID(),
-        ipAddress: '244.28.239.130'
-      }
+        ipAddress: '172.33.222.1'
+      },
+      encryptedCVV: '',
+      amount: amountEntered
     };
 
     const cardDetails = {
-      number: '4007400000000007',
+      number: '5102420000000006',
       cvv: '123'
     };
 
-    payload.encryptedData = await this.encryptCardData(cardDetails, publicKey, keyId);
+    const data = await this.encryptCardData(cardDetails, publicKey, keyId);
+    const encryptedCVV = await this.encryptCVV(cardDetails.cvv, publicKey, keyId);
+
+    payload.encryptedData = data.encryptedData;
+    payload.encryptedCVV = encryptedCVV.encryptedData;
 
     const requestOptions = {
       data: {
@@ -131,7 +138,22 @@ class PaymentForm extends React.Component {
 
     return openPGP.encrypt(options).then((cipherText) => (
       {
-        encryptedData: btoa(cipherText.data),
+        encryptedData: btoa(cipherText),
+        keyId
+      }
+    ));
+  }
+
+  encryptCVV = async (CVV, key, keyId) => {
+    const decodedPublicKey = atob(key);
+    const options = {
+      message: await openPGP.createMessage({ text: JSON.stringify(CVV) }),
+      encryptionKeys: await openPGP.readKey({ armoredKey: decodedPublicKey })
+    };
+
+    return openPGP.encrypt(options).then((cipherText) => (
+      {
+        encryptedData: btoa(cipherText),
         keyId
       }
     ));
