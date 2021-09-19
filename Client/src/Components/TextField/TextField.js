@@ -22,6 +22,7 @@ class TextField extends React.Component {
   }
 
   handleBlur = () => {
+    const { onChangeEvent } = this.props;
     const { type } = this.props;
     const { value } = this.state;
 
@@ -42,10 +43,12 @@ class TextField extends React.Component {
     } else if (type === 'cardCVV') {
       this.testInputAgainstRegex(/^((\d{3})?)$/, value);
     }
+
+    onChangeEvent();
   }
 
   testInputAgainstRegex = (regex, value) => {
-    if (regex.test(value)) {
+    if (regex.test(value) && value.trim().length > 0) {
       this.setState({
         isInErrorState: false,
         isFocused: false
@@ -59,6 +62,8 @@ class TextField extends React.Component {
   }
 
   render() {
+    const { value } = this.state;
+    const { shouldDisplayError } = this.props;
     const { isInErrorState } = this.state;
     const { isFocused } = this.state;
     const { type } = this.props;
@@ -69,7 +74,7 @@ class TextField extends React.Component {
 
     if (isFocused) {
       textFieldContainerClassNames = `${styles.textFieldContainer} ${styles.focused}`;
-    } else if (isInErrorState) {
+    } else if (isInErrorState || shouldDisplayError) {
       textFieldContainerClassNames = `${styles.textFieldContainer} ${styles.error}`;
     } else {
       textFieldContainerClassNames = `${styles.textFieldContainer}`;
@@ -104,7 +109,7 @@ class TextField extends React.Component {
             });
           }}
         />
-        <ExclamationError labelType="TextField" shouldDisplay={isInErrorState && !isFocused} />
+        <ExclamationError labelType="TextField" shouldDisplay={(isInErrorState && !isFocused) || (shouldDisplayError && value.length === 0)} />
       </div>
     );
   }
@@ -113,7 +118,8 @@ class TextField extends React.Component {
 TextField.propTypes = {
   type: PropTypes.string,
   placeholder: PropTypes.string,
-  onChangeEvent: PropTypes.func
+  onChangeEvent: PropTypes.func,
+  shouldDisplayError: PropTypes.bool
 };
 
 export default TextField;

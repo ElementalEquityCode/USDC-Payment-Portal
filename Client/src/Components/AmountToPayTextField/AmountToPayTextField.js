@@ -34,13 +34,15 @@ class AmountToPayTextField extends React.Component {
     });
   }
 
-  handleAmountToPayTextFieldBlured = () => {
+  handleAmountToPayTextFieldBlured = (consumerValue) => {
     const { value } = this.state;
 
     this.setState({
       isFocused: false,
       isInErrorState: value === ''
     });
+
+    consumerValue.handleAmountEnteredChanged(value);
   }
 
   handleTextChange = (event, consumerValue) => {
@@ -103,7 +105,9 @@ class AmountToPayTextField extends React.Component {
                 className={styles.amountToPayTextField}
                 placeholder="0.00"
                 onFocus={this.handleAmountToPayTextFieldSetFocused}
-                onBlur={this.handleAmountToPayTextFieldBlured}
+                onBlur={() => {
+                  this.handleAmountToPayTextFieldBlured(consumerValue);
+                }}
                 ref={this.amountToPayTextFieldRef}
                 onChange={(event) => {
                   this.handleTextChange(event, consumerValue);

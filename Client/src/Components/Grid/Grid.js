@@ -8,14 +8,14 @@ const Grid = (props) => {
 
   if (columns === 'two') {
     return (
-      <div className={`${styles.grid} ${styles.two}`}>
+      <div className={`${styles.two}`}>
         {children}
       </div>
     );
   }
 
   return (
-    <div className={`${styles.grid} ${styles.one}`}>
+    <div className={`${styles.one}`}>
       {children}
     </div>
   );

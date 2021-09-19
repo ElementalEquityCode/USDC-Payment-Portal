@@ -1,22 +1,11 @@
-.grid {
-    display: grid;
-    padding: 10px 20px;
-}
-
 .one {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr;  
+    padding: 10px 20px;
     grid-row-gap: 10px;
 }
 
 .two {
-    grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 20px;
-}
-
-@media screen and (max-width: 900px) {
-    .two {
-        grid-template-columns: 1fr;
-        grid-column-gap: 0;
-        grid-row-gap: 20px;
-    }
+    display: flex;
+    justify-content: space-between;
 }
