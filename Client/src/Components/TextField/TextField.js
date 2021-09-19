@@ -35,9 +35,24 @@ class TextField extends React.Component {
         isInErrorState: !validator.validate(value.trim()),
         isFocused: false
       });
-    } else {
+    } else if (type === 'cardNumber') {
+      this.testInputAgainstRegex(/^((\d{16})?)$/, value);
+    } else if (type === 'cardExpiry') {
+      this.testInputAgainstRegex(/^(((\d{2})(\/)(\d{4}))?)$/, value);
+    } else if (type === 'cardCVV') {
+      this.testInputAgainstRegex(/^((\d{3})?)$/, value);
+    }
+  }
+
+  testInputAgainstRegex = (regex, value) => {
+    if (regex.test(value)) {
       this.setState({
         isInErrorState: false,
+        isFocused: false
+      });
+    } else {
+      this.setState({
+        isInErrorState: true,
         isFocused: false
       });
     }
@@ -46,6 +61,7 @@ class TextField extends React.Component {
   render() {
     const { isInErrorState } = this.state;
     const { isFocused } = this.state;
+    const { type } = this.props;
     const { placeholder } = this.props;
     const { onChangeEvent } = this.props;
 
@@ -59,9 +75,20 @@ class TextField extends React.Component {
       textFieldContainerClassNames = `${styles.textFieldContainer}`;
     }
 
+    let maxLength = '50';
+
+    if (type === 'cardNumber') {
+      maxLength = '16';
+    } else if (type === 'cardExpiry') {
+      maxLength = '7';
+    } else if (type === 'cardCVV') {
+      maxLength = '3';
+    }
+
     return (
       <div className={textFieldContainerClassNames}>
         <input
+          maxLength={maxLength}
           className={styles.textField}
           type="text"
           placeholder={placeholder}

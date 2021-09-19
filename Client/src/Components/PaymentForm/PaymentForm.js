@@ -23,17 +23,12 @@ class PaymentForm extends React.Component {
       },
       name: '',
       email: '',
+      cardNumber: '',
+      cardExpiry: '',
+      cardCVV: ',',
       amountEntered: '',
       isFormComplete: false
     };
-  }
-
-  handleAmountEnteredChanged = (value) => {
-    this.setState({
-      amountEntered: value
-    }, () => {
-      this.checkIfFormIsComplete();
-    });
   }
 
   handleEmailChanged = (event) => {
@@ -52,12 +47,49 @@ class PaymentForm extends React.Component {
     });
   }
 
+  handleCardNumberChanged = (event) => {
+    this.setState({
+      cardNumber: event.target.value
+    }, () => {
+      this.checkIfFormIsComplete();
+    });
+  }
+
+  handleCardExpiryChanged = (event) => {
+    this.setState({
+      cardExpiry: event.target.value
+    }, () => {
+      this.checkIfFormIsComplete();
+    });
+  }
+
+  handleCardCVVChanged = (event) => {
+    this.setState({
+      cardCVV: event.target.value
+    }, () => {
+      this.checkIfFormIsComplete();
+    });
+  }
+
+  handleAmountEnteredChanged = (value) => {
+    this.setState({
+      amountEntered: value
+    }, () => {
+      this.checkIfFormIsComplete();
+    });
+  }
+
   checkIfFormIsComplete = () => {
     const { name } = this.state;
     const { email } = this.state;
+
+    const { cardNumber } = this.state;
+    const { cardExpiry } = this.state;
+    const { cardCVV } = this.state;
+
     const { amountEntered } = this.state;
 
-    if (name.trim() !== '' && validator.validate(email.trim()) && amountEntered !== '') {
+    if (name.trim() !== '' && validator.validate(email.trim()) && amountEntered !== '' && cardNumber.trim().length === 16 && cardExpiry.trim().length === 7 && cardCVV.trim().length === 3) {
       this.setState({
         isFormComplete: true
       });
@@ -77,7 +109,17 @@ class PaymentForm extends React.Component {
   }
 
   createCard = async () => {
+    const { name } = this.state;
+    const { email } = this.state;
+
+    const { cardNumber } = this.state;
+    const { cardExpiry } = this.state;
+    const { cardCVV } = this.state;
+
+    const [cardExpiryMonth, cardExpiryYear] = cardExpiry.split('/');
+
     const { amountEntered } = this.state;
+
     const { key } = this.state;
     const { keyId } = key;
     const { publicKey } = key;
@@ -87,17 +129,17 @@ class PaymentForm extends React.Component {
       keyId,
       encryptedData: '',
       billingDetails: {
-        name: 'Daniel Valencia',
+        name,
         city: 'Doral',
         country: 'US',
         line1: '11133 NW 71st Ter',
         district: 'FL',
         postalCode: '33178'
       },
-      expMonth: 12,
-      expYear: 2022,
+      expMonth: parseInt(cardExpiryMonth, 10),
+      expYear: parseInt(cardExpiryYear, 10),
       metadata: {
-        email: 'valencia.0.daniel@gmail.com',
+        email,
         sessionId: UUID(),
         ipAddress: '172.33.222.1'
       },
@@ -106,8 +148,8 @@ class PaymentForm extends React.Component {
     };
 
     const cardDetails = {
-      number: '5102420000000006',
-      cvv: '123'
+      number: cardNumber,
+      cvv: cardCVV
     };
 
     const data = await this.encryptCardData(cardDetails, publicKey, keyId);
@@ -208,13 +250,19 @@ class PaymentForm extends React.Component {
               Card Information
             </SectionLabel>
             <TextField
+              type="cardNumber"
               placeholder="1234 1234 1234 1234"
+              onChangeEvent={this.handleCardNumberChanged}
             />
             <TextField
+              type="cardExpiry"
               placeholder="MM/YY"
+              onChangeEvent={this.handleCardExpiryChanged}
             />
             <TextField
-              placeholder="CVC"
+              type="cardCVV"
+              placeholder="CVV"
+              onChangeEvent={this.handleCardCVVChanged}
             />
           </Grid>
         </div>

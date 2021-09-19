@@ -47,10 +47,10 @@ createPaymentRouter.post('/create-card-payment', (req, res) => {
       axios.post('https://api-sandbox.circle.com/v1/payments', data, requestOptions).then((response) => {
         console.log(response.data);
       }).catch((error) => {
-        console.log(`Payment error - ${error}`);
+        console.log(error);
       });
   }).catch((error) => {
-    console.log(`Card error - ${error}`);
+    console.log(error);
   });
 });
 
