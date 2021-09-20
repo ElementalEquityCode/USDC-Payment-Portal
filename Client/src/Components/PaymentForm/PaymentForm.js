@@ -22,67 +22,74 @@ class PaymentForm extends React.Component {
         keyId: '',
         publicKey: ''
       },
-      name: '',
-      email: '',
-      cardNumber: '',
-      cardExpiry: '',
-      cardCVV: '',
-      amountEntered: '',
-      shouldDisplayClientInformationError: false,
-      shouldDisplayCardInformationError: false,
-      shouldDisplayAmountEnteredError: false,
+      name: {
+        value: '',
+        isInErrorState: false
+      },
+      email: {
+        value: '',
+        isInErrorState: false
+      },
+      cardNumber: {
+        value: '',
+        isInErrorState: false
+      },
+      cardExpiry: {
+        value: '',
+        isInErrorState: false
+      },
+      cardCVV: {
+        value: '',
+        isInErrorState: false
+      },
+      amountEntered: {
+        value: '',
+        isInErrorState: false
+      },
       isFormComplete: false
     };
-  }
-
-  handleEmailChanged = (event) => {
-    if (event) {
-      this.setState({
-        email: event.target.value
-      }, () => {
-        this.checkIfFormIsComplete();
-      });
-    } else {
-      this.shouldDisplayEmailError();
-    }
-  }
-
-  shouldDisplayEmailError = () => {
-    const { email } = this.state;
-
-    if (!validator.validate(email.trim())) {
-      this.setState({
-        shouldDisplayClientInformationError: true
-      });
-    } else {
-      this.setState({
-        shouldDisplayClientInformationError: false
-      });
-    }
   }
 
   handleNameChanged = (event) => {
     if (event) {
       this.setState({
-        name: event.target.value
+        name: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
       }, () => {
         this.checkIfFormIsComplete();
       });
     } else {
-      this.shouldDisplayNameError();
+      const { name } = this.state;
+
+      this.setState({
+        name: {
+          value: name.value,
+          isInErrorState: name.value.trim().length === 0
+        }
+      });
     }
   }
 
-  shouldDisplayNameError = () => {
-    const { name } = this.state;
-
-    if (name.trim() === '') {
+  handleEmailChanged = (event) => {
+    if (event) {
       this.setState({
-        shouldDisplayClientInformationError: true
+        email: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
+      }, () => {
+        this.checkIfFormIsComplete();
       });
     } else {
+      const { email } = this.state;
+
       this.setState({
-        shouldDisplayClientInformationError: false
+        email: {
+          value: email.value,
+          isInErrorState: !validator.validate(email.value.trim())
+        }
       });
     }
   }
@@ -90,25 +97,21 @@ class PaymentForm extends React.Component {
   handleCardNumberChanged = (event) => {
     if (event) {
       this.setState({
-        cardNumber: event.target.value
+        cardNumber: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
       }, () => {
         this.checkIfFormIsComplete();
       });
     } else {
-      this.shouldDisplayCardNumberError();
-    }
-  }
+      const { cardNumber } = this.state;
 
-  shouldDisplayCardNumberError = () => {
-    const { cardNumber } = this.state;
-
-    if (cardNumber.trim().length !== 16) {
       this.setState({
-        shouldDisplayCardInformationError: true
-      });
-    } else {
-      this.setState({
-        shouldDisplayCardInformationError: false
+        cardNumber: {
+          value: cardNumber.value,
+          isInErrorState: cardNumber.value.length !== 16
+        }
       });
     }
   }
@@ -116,25 +119,21 @@ class PaymentForm extends React.Component {
   handleCardExpiryChanged = (event) => {
     if (event) {
       this.setState({
-        cardExpiry: event.target.value
+        cardExpiry: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
       }, () => {
         this.checkIfFormIsComplete();
       });
     } else {
-      this.shouldDisplayCardExpiryError();
-    }
-  }
+      const { cardExpiry } = this.state;
 
-  shouldDisplayCardExpiryError = () => {
-    const { cardExpiry } = this.state;
-
-    if (cardExpiry.trim().length !== 7) {
       this.setState({
-        shouldDisplayCardInformationError: true
-      });
-    } else {
-      this.setState({
-        shouldDisplayCardInformationError: false
+        cardExpiry: {
+          value: cardExpiry.value,
+          isInErrorState: cardExpiry.value.length !== 7
+        }
       });
     }
   }
@@ -142,25 +141,21 @@ class PaymentForm extends React.Component {
   handleCardCVVChanged = (event) => {
     if (event) {
       this.setState({
-        cardCVV: event.target.value
+        cardCVV: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
       }, () => {
         this.checkIfFormIsComplete();
       });
     } else {
-      this.shouldDisplayCVVError();
-    }
-  }
+      const { cardCVV } = this.state;
 
-  shouldDisplayCVVError = () => {
-    const { cardCVV } = this.state;
-
-    if (cardCVV.trim().length !== 3) {
       this.setState({
-        shouldDisplayCardInformationError: true
-      });
-    } else {
-      this.setState({
-        shouldDisplayCardInformationError: false
+        cardCVV: {
+          value: cardCVV.value,
+          isInErrorState: cardCVV.value.length !== 3
+        }
       });
     }
   }
@@ -168,20 +163,23 @@ class PaymentForm extends React.Component {
   handleAmountEnteredChanged = (value) => {
     if (value) {
       this.setState({
-        amountEntered: value,
-        shouldDisplayAmountEnteredError: !value.length > 0
+        amountEntered: {
+          value,
+          isInErrorState: false
+        }
       }, () => {
         this.checkIfFormIsComplete();
       });
     } else {
-      this.shouldDisplayAmountEnteredError();
-    }
-  }
+      const { amountEntered } = this.state;
 
-  shouldDisplayAmountEnteredError = () => {
-    this.setState({
-      shouldDisplayAmountEnteredError: true
-    });
+      this.setState({
+        amountEntered: {
+          value: amountEntered.value,
+          isInErrorState: amountEntered.value.length > 0
+        }
+      });
+    }
   }
 
   checkIfFormIsComplete = () => {
@@ -194,7 +192,12 @@ class PaymentForm extends React.Component {
 
     const { amountEntered } = this.state;
 
-    if (name.trim() !== '' && validator.validate(email.trim()) && amountEntered !== '' && cardNumber.trim().length === 16 && cardExpiry.trim().length === 7 && cardCVV.trim().length === 3) {
+    if (!name.isInErrorState
+      && email.isInErrorState
+      && cardNumber.isInErrorState
+      && cardExpiry.isInErrorState
+      && cardCVV.isInErrorState
+      && amountEntered.isInErrorState) {
       this.setState({
         isFormComplete: true
       });
@@ -211,12 +214,66 @@ class PaymentForm extends React.Component {
     if (isFormComplete) {
       this.createCard();
     } else {
-      this.shouldDisplayNameError();
-      this.shouldDisplayEmailError();
-      this.shouldDisplayCardNumberError();
-      this.shouldDisplayCardExpiryError();
-      this.shouldDisplayCVVError();
-      this.shouldDisplayAmountEnteredError();
+      const { name } = this.state;
+      const { email } = this.state;
+      const { cardNumber } = this.state;
+      const { cardExpiry } = this.state;
+      const { cardCVV } = this.state;
+      const { amountEntered } = this.state;
+
+      if (name.value.trim().length === 0) {
+        this.setState({
+          name: {
+            value: '',
+            isInErrorState: true
+          }
+        });
+
+        if (!validator.validate(email.value.trim())) {
+          this.setState({
+            email: {
+              value: email.value,
+              isInErrorState: true
+            }
+          });
+
+          if (cardNumber.value.length !== 16) {
+            this.setState({
+              cardNumber: {
+                value: cardNumber.value,
+                isInErrorState: true
+              }
+            });
+          }
+
+          if (cardExpiry.value.length !== 7) {
+            this.setState({
+              cardExpiry: {
+                value: cardExpiry.value,
+                isInErrorState: true
+              }
+            });
+          }
+
+          if (cardCVV.value.length !== 3) {
+            this.setState({
+              cardCVV: {
+                value: cardCVV.value,
+                isInErrorState: true
+              }
+            });
+          }
+
+          if (amountEntered.value.length === 0) {
+            this.setState({
+              amountEntered: {
+                value: amountEntered.value,
+                isInErrorState: true
+              }
+            });
+          }
+        }
+      }
     }
   }
 
@@ -325,12 +382,15 @@ class PaymentForm extends React.Component {
 
   render() {
     const { isFormComplete } = this.state;
-    const { amountEntered } = this.state;
-    const { name } = this.state;
 
-    const { shouldDisplayClientInformationError } = this.state;
-    const { shouldDisplayCardInformationError } = this.state;
-    const { shouldDisplayAmountEnteredError } = this.state;
+    const { name } = this.state;
+    const { email } = this.state;
+
+    const { cardNumber } = this.state;
+    const { cardExpiry } = this.state;
+    const { cardCVV } = this.state;
+
+    const { amountEntered } = this.state;
 
     return (
       <div
@@ -349,19 +409,19 @@ class PaymentForm extends React.Component {
               >
                 Client Information
               </SectionLabel>
-              <RequiredLabel shouldDisplay={shouldDisplayClientInformationError} />
+              <RequiredLabel shouldDisplay={name.isInErrorState || email.isInErrorState} />
             </Grid>
             <TextField
               type="name"
               placeholder="Name"
               onChangeEvent={this.handleNameChanged}
-              shouldDisplayError={shouldDisplayClientInformationError}
+              shouldDisplayError={name.isInErrorState}
             />
             <TextField
               type="email"
               placeholder="Email"
               onChangeEvent={this.handleEmailChanged}
-              shouldDisplayError={shouldDisplayClientInformationError}
+              shouldDisplayError={email.isInErrorState}
             />
           </Grid>
           <Grid
@@ -375,35 +435,41 @@ class PaymentForm extends React.Component {
               >
                 Card Information
               </SectionLabel>
-              <RequiredLabel shouldDisplay={shouldDisplayCardInformationError} />
+              <RequiredLabel
+                shouldDisplay={
+                    cardNumber.isInErrorState
+                    || cardExpiry.isInErrorState
+                    || cardCVV.isInErrorState
+                }
+              />
             </Grid>
             <TextField
               type="cardNumber"
               placeholder="1234 1234 1234 1234"
               onChangeEvent={this.handleCardNumberChanged}
-              shouldDisplayError={shouldDisplayCardInformationError}
+              shouldDisplayError={cardNumber.isInErrorState}
             />
             <TextField
               type="cardExpiry"
               placeholder="MM/YY"
               onChangeEvent={this.handleCardExpiryChanged}
-              shouldDisplayError={shouldDisplayCardInformationError}
+              shouldDisplayError={cardExpiry.isInErrorState}
             />
             <TextField
               type="cardCVV"
               placeholder="CVV"
               onChangeEvent={this.handleCardCVVChanged}
-              shouldDisplayError={shouldDisplayCardInformationError}
+              shouldDisplayError={cardCVV.isInErrorState}
             />
           </Grid>
         </div>
         <div className={styles.amountToPayForm}>
           <ValuesContext.Provider value={{
-            name,
+            name: name.value,
             handleAmountEnteredChanged: this.handleAmountEnteredChanged,
-            amountEntered,
+            amountEntered: amountEntered.value,
             isFormComplete,
-            shouldDisplayAmountEnteredError,
+            shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
             formCompletionHandler: this.formCompletionHandler
           }}
           >

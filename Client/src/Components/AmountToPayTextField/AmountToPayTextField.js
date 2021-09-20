@@ -66,57 +66,61 @@ class AmountToPayTextField extends React.Component {
     const { value } = this.state;
     const { isFocused } = this.state;
 
-    let amountToPayTextFiedlContainerClassNames = '';
+    let amountToPayTextFieldContainerClassNames = '';
 
     if (isFocused) {
-      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.focused}`;
+      amountToPayTextFieldContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.focused}`;
     } else if (isInErrorState) {
-      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.error}`;
+      amountToPayTextFieldContainerClassNames = `${styles.amountToPayTextFieldContainer} ${styles.error}`;
     } else {
-      amountToPayTextFiedlContainerClassNames = `${styles.amountToPayTextFieldContainer}`;
+      amountToPayTextFieldContainerClassNames = `${styles.amountToPayTextFieldContainer}`;
     }
 
     return (
       <div className={styles.container}>
-        <div
-          className={amountToPayTextFiedlContainerClassNames}
-          onMouseDown={(event) => {
-            if (!isFocused) {
-              this.handleAmountToPayTextFieldContainerClicked();
-              event.preventDefault();
-            } else if (isFocused) {
-              if (event.target !== this.amountToPayTextFieldRef.current) {
-                event.preventDefault();
-              }
-            }
-          }}
-          onKeyDown={this.handleAmountToPayTextFieldContainerClicked}
-          role="textbox"
-          tabIndex={0}
-        >
-          <div className={styles.dollarSignContainer}>
-            <span className={styles.dollarSign}>$</span>
-          </div>
-          <ValuesContext.Consumer>
-            {(consumerValue) => (
-              <input
-                value={value}
-                type="text"
-                className={styles.amountToPayTextField}
-                placeholder="0.00"
-                onFocus={this.handleAmountToPayTextFieldSetFocused}
-                onBlur={() => {
-                  this.handleAmountToPayTextFieldBlured(consumerValue);
+        <ValuesContext.Consumer>
+          {(consumerValue) => (
+            <>
+              <div
+                className={!amountToPayTextFieldContainerClassNames.includes(`${styles.error}`) && consumerValue.shouldDisplayAmountEnteredError ? `${amountToPayTextFieldContainerClassNames} ${styles.error}` : amountToPayTextFieldContainerClassNames}
+                onMouseDown={(event) => {
+                  if (!isFocused) {
+                    this.handleAmountToPayTextFieldContainerClicked();
+                    event.preventDefault();
+                  } else if (isFocused) {
+                    if (event.target !== this.amountToPayTextFieldRef.current) {
+                      event.preventDefault();
+                    }
+                  }
                 }}
-                ref={this.amountToPayTextFieldRef}
-                onChange={(event) => {
-                  this.handleTextChange(event, consumerValue);
-                }}
+                onKeyDown={this.handleAmountToPayTextFieldContainerClicked}
+                role="textbox"
+                tabIndex={0}
+              >
+                <div className={styles.dollarSignContainer}>
+                  <span className={styles.dollarSign}>$</span>
+                </div>
+                <input
+                  value={value}
+                  type="text"
+                  className={styles.amountToPayTextField}
+                  placeholder="0.00"
+                  onFocus={this.handleAmountToPayTextFieldSetFocused}
+                  onBlur={() => {
+                    this.handleAmountToPayTextFieldBlured(consumerValue);
+                  }}
+                  ref={this.amountToPayTextFieldRef}
+                  onChange={(event) => {
+                    this.handleTextChange(event, consumerValue);
+                  }}
+                />
+              </div>
+              <ExclamationError shouldDisplay={(isInErrorState && !isFocused)
+              || (consumerValue.shouldDisplayAmountEnteredError && value.length === 0)}
               />
-            )}
-          </ValuesContext.Consumer>
-        </div>
-        <ExclamationError shouldDisplay={isInErrorState && !isFocused} />
+            </>
+          )}
+        </ValuesContext.Consumer>
       </div>
     );
   }
