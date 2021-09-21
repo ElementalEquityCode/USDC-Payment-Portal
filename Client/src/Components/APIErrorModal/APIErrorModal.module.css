@@ -1,0 +1,29 @@
+.apiErrorModal {
+    background-color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 25%), 0 5px 15px 0 rgb(0 0 0 / 15%);
+    transform: translateY(-50px);
+    transition: transform 0.3s ease-out;
+}
+
+.visible {
+    transform: translateY(0) !important;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.infoIcon {
+    width: 15px;
+    height: 15px;
+}
+
+.apiErrorModalText {
+    margin-left: 5px;
+    text-align: center;
+    font-weight: 300;
+}

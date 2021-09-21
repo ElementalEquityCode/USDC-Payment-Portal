@@ -23,7 +23,7 @@ getReactFolderPath = () => {
 
 appRouter.use(express.static(getReactFolderPath()));
 
-appRouter.get('*', (req, res) => {
+appRouter.get('/', (req, res) => {
   res.sendFile(getReactAppFilePath());
 });
 

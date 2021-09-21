@@ -3,11 +3,12 @@ import axios from 'axios';
 import { v4 as UUID } from 'uuid';
 import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
+import Grid from '../Grid/Grid';
 import TodaysDate from '../TodaysDate/TodaysDate';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import RequiredLabel from '../RequiredLabel/RequiredLabel';
 import TextField from '../TextField/TextField';
-import Grid from '../Grid/Grid';
+import APIErrorModal from '../APIErrorModal/APIErrorModal';
 import styles from './PaymentForm.module.css';
 
 const openPGP = require('openpgp');
@@ -20,7 +21,8 @@ class PaymentForm extends React.Component {
     this.state = {
       key: {
         keyId: '',
-        publicKey: ''
+        publicKey: '',
+        isInErrorState: false
       },
       name: {
         value: '',
@@ -192,12 +194,12 @@ class PaymentForm extends React.Component {
 
     const { amountEntered } = this.state;
 
-    if (!name.isInErrorState
-      && email.isInErrorState
-      && cardNumber.isInErrorState
-      && cardExpiry.isInErrorState
-      && cardCVV.isInErrorState
-      && amountEntered.isInErrorState) {
+    if (name.value.trim().length !== 0
+      && validator.validate(email.value.trim())
+      && cardNumber.value.trim().length === 16
+      && cardExpiry.value.trim().length === 7
+      && cardCVV.value.trim().length === 3
+      && amountEntered.value.trim().length !== 0) {
       this.setState({
         isFormComplete: true
       });
@@ -285,7 +287,7 @@ class PaymentForm extends React.Component {
     const { cardExpiry } = this.state;
     const { cardCVV } = this.state;
 
-    const [cardExpiryMonth, cardExpiryYear] = cardExpiry.split('/');
+    const [cardExpiryMonth, cardExpiryYear] = cardExpiry.value.split('/');
 
     const { amountEntered } = this.state;
 
@@ -298,7 +300,7 @@ class PaymentForm extends React.Component {
       keyId,
       encryptedData: '',
       billingDetails: {
-        name,
+        name: name.value,
         city: 'Doral',
         country: 'US',
         line1: '11133 NW 71st Ter',
@@ -308,17 +310,17 @@ class PaymentForm extends React.Component {
       expMonth: parseInt(cardExpiryMonth, 10),
       expYear: parseInt(cardExpiryYear, 10),
       metadata: {
-        email,
+        email: email.value,
         sessionId: UUID(),
         ipAddress: '172.33.222.1'
       },
       encryptedCVV: '',
-      amount: amountEntered
+      amount: amountEntered.value
     };
 
     const cardDetails = {
-      number: cardNumber,
-      cvv: cardCVV
+      number: cardNumber.value,
+      cvv: cardCVV.value
     };
 
     const data = await this.encryptCardData(cardDetails, publicKey, keyId);
@@ -373,15 +375,26 @@ class PaymentForm extends React.Component {
   componentDidMount = () => {
     axios.get('/key').then((response) => {
       this.setState({
-        key: response.data
+        key: {
+          keyId: response.data.keyId,
+          publicKey: response.data.publicKey,
+          isInErrorState: false
+        }
       });
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
+      this.setState({
+        key: {
+          keyId: '',
+          publicKey: '',
+          isInErrorState: true
+        }
+      });
     });
   }
 
   render() {
     const { isFormComplete } = this.state;
+    const { key } = this.state;
 
     const { name } = this.state;
     const { email } = this.state;
@@ -393,90 +406,97 @@ class PaymentForm extends React.Component {
     const { amountEntered } = this.state;
 
     return (
-      <div
-        className={styles.overallGrid}
-      >
-        <div className={styles.paymentForm}>
-          <TodaysDate />
-          <Grid
-            columns="one"
-          >
+      <>
+        <APIErrorModal
+          shouldDisplay={key.isInErrorState}
+        >
+          Error retrieving public key. Transactions will not process - refresh page
+        </APIErrorModal>
+        <div
+          className={styles.overallGrid}
+        >
+          <div className={styles.paymentForm}>
+            <TodaysDate />
             <Grid
-              columns="two"
+              columns="one"
             >
-              <SectionLabel
-                type="dark"
+              <Grid
+                columns="two"
               >
-                Client Information
-              </SectionLabel>
-              <RequiredLabel shouldDisplay={name.isInErrorState || email.isInErrorState} />
-            </Grid>
-            <TextField
-              type="name"
-              placeholder="Name"
-              onChangeEvent={this.handleNameChanged}
-              shouldDisplayError={name.isInErrorState}
-            />
-            <TextField
-              type="email"
-              placeholder="Email"
-              onChangeEvent={this.handleEmailChanged}
-              shouldDisplayError={email.isInErrorState}
-            />
-          </Grid>
-          <Grid
-            columns="one"
-          >
-            <Grid
-              columns="two"
-            >
-              <SectionLabel
-                type="dark"
-              >
-                Card Information
-              </SectionLabel>
-              <RequiredLabel
-                shouldDisplay={
-                    cardNumber.isInErrorState
-                    || cardExpiry.isInErrorState
-                    || cardCVV.isInErrorState
-                }
+                <SectionLabel
+                  type="dark"
+                >
+                  Client Information
+                </SectionLabel>
+                <RequiredLabel shouldDisplay={name.isInErrorState || email.isInErrorState} />
+              </Grid>
+              <TextField
+                type="name"
+                placeholder="Name"
+                onChangeEvent={this.handleNameChanged}
+                shouldDisplayError={name.isInErrorState}
+              />
+              <TextField
+                type="email"
+                placeholder="Email"
+                onChangeEvent={this.handleEmailChanged}
+                shouldDisplayError={email.isInErrorState}
               />
             </Grid>
-            <TextField
-              type="cardNumber"
-              placeholder="1234 1234 1234 1234"
-              onChangeEvent={this.handleCardNumberChanged}
-              shouldDisplayError={cardNumber.isInErrorState}
-            />
-            <TextField
-              type="cardExpiry"
-              placeholder="MM/YY"
-              onChangeEvent={this.handleCardExpiryChanged}
-              shouldDisplayError={cardExpiry.isInErrorState}
-            />
-            <TextField
-              type="cardCVV"
-              placeholder="CVV"
-              onChangeEvent={this.handleCardCVVChanged}
-              shouldDisplayError={cardCVV.isInErrorState}
-            />
-          </Grid>
+            <Grid
+              columns="one"
+            >
+              <Grid
+                columns="two"
+              >
+                <SectionLabel
+                  type="dark"
+                >
+                  Card Information
+                </SectionLabel>
+                <RequiredLabel
+                  shouldDisplay={
+                      cardNumber.isInErrorState
+                      || cardExpiry.isInErrorState
+                      || cardCVV.isInErrorState
+                  }
+                />
+              </Grid>
+              <TextField
+                type="cardNumber"
+                placeholder="1234 1234 1234 1234"
+                onChangeEvent={this.handleCardNumberChanged}
+                shouldDisplayError={cardNumber.isInErrorState}
+              />
+              <TextField
+                type="cardExpiry"
+                placeholder="MM/YY"
+                onChangeEvent={this.handleCardExpiryChanged}
+                shouldDisplayError={cardExpiry.isInErrorState}
+              />
+              <TextField
+                type="cardCVV"
+                placeholder="CVV"
+                onChangeEvent={this.handleCardCVVChanged}
+                shouldDisplayError={cardCVV.isInErrorState}
+              />
+            </Grid>
+          </div>
+          <div className={styles.amountToPayForm}>
+            <ValuesContext.Provider value={{
+              name: name.value,
+              handleAmountEnteredChanged: this.handleAmountEnteredChanged,
+              amountEntered: amountEntered.value,
+              isFormComplete,
+              shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
+              formCompletionHandler: this.formCompletionHandler
+            }}
+            >
+              <AmountToPayForm />
+            </ValuesContext.Provider>
+          </div>
         </div>
-        <div className={styles.amountToPayForm}>
-          <ValuesContext.Provider value={{
-            name: name.value,
-            handleAmountEnteredChanged: this.handleAmountEnteredChanged,
-            amountEntered: amountEntered.value,
-            isFormComplete,
-            shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
-            formCompletionHandler: this.formCompletionHandler
-          }}
-          >
-            <AmountToPayForm />
-          </ValuesContext.Provider>
-        </div>
-      </div>
+      </>
     );
   }
 }
