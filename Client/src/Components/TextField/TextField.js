@@ -61,6 +61,32 @@ class TextField extends React.Component {
     }
   }
 
+  handleTextChange = (event, onChangeEvent) => {
+    const { type } = this.props;
+    let regex = /.*/;
+
+    if (type === 'cardNumber') {
+      regex = /^((\d{0,16})?)$/;
+    } else if (type === 'cardExpiry') {
+      regex = /(^(((\d{0,2})?(\/)(\d{0,4})?))$)?/;
+    } else if (type === 'cardCVV') {
+      regex = /^((\d{0,3})?)$/;
+    }
+
+    if (!regex.test(event.target.value)) {
+      this.setState({
+      });
+    } else {
+      this.setState({
+        value: event.target.value
+      }, () => {
+        if (onChangeEvent) {
+          onChangeEvent(event);
+        }
+      });
+    }
+  }
+
   render() {
     const { value } = this.state;
     const { shouldDisplayError } = this.props;
@@ -93,6 +119,7 @@ class TextField extends React.Component {
     return (
       <div className={textFieldContainerClassNames}>
         <input
+          value={value}
           maxLength={maxLength}
           className={styles.textField}
           type="text"
@@ -100,13 +127,7 @@ class TextField extends React.Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onChange={(event) => {
-            if (onChangeEvent !== undefined) {
-              onChangeEvent(event);
-            }
-
-            this.setState({
-              value: event.target.value
-            });
+            this.handleTextChange(event, onChangeEvent);
           }}
         />
         <ExclamationError labelType="TextField" shouldDisplay={(isInErrorState && !isFocused) || (shouldDisplayError && value.length === 0)} />

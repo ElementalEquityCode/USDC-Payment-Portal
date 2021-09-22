@@ -178,7 +178,7 @@ class PaymentForm extends React.Component {
       this.setState({
         amountEntered: {
           value: amountEntered.value,
-          isInErrorState: amountEntered.value.length > 0
+          isInErrorState: !amountEntered.value.length > 0
         }
       });
     }
@@ -470,7 +470,7 @@ class PaymentForm extends React.Component {
               />
               <TextField
                 type="cardExpiry"
-                placeholder="MM/YY"
+                placeholder="MM/YYYY"
                 onChangeEvent={this.handleCardExpiryChanged}
                 shouldDisplayError={cardExpiry.isInErrorState}
               />
