@@ -7,9 +7,11 @@ import SectionLabel from '../SectionLabel/SectionLabel';
 import RequireLabel from '../RequiredLabel/RequiredLabel';
 import PaymentFromTo from '../PaymentFromTo/PaymentFromTo';
 import GeneralActionButton from '../GeneralActionButton/GeneralActionButton';
+import PaymentResponseError from '../PaymentResponseError/PaymentResponseError';
 
 const AmountToPayForm = () => {
   const { shouldDisplayAmountEnteredError } = useContext(ValuesContext);
+  const { paymentErrorResponse } = useContext(ValuesContext);
 
   return (
     <div className={styles.amountToPayForm}>
@@ -33,6 +35,11 @@ const AmountToPayForm = () => {
         <GeneralActionButton>
           Enter Amount to Pay
         </GeneralActionButton>
+        <PaymentResponseError
+          shouldDisplay={paymentErrorResponse}
+        >
+          {paymentErrorResponse}
+        </PaymentResponseError>
       </Grid>
     </div>
   );

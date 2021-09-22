@@ -24,6 +24,9 @@ class PaymentForm extends React.Component {
         publicKey: '',
         isInErrorState: false
       },
+      apiError: {
+        message: ''
+      },
       name: {
         value: '',
         isInErrorState: false
@@ -335,12 +338,78 @@ class PaymentForm extends React.Component {
       }
     };
 
-    axios.post('/create-card-payment', requestOptions).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.log(error);
-    });
+    axios.post('/create-card-payment', requestOptions)
+      .then((response) => {
+        if (response.data.status === 'pending') {
+          this.pollEndpoint(response.data.id);
+        }
+      })
+      .catch(({ response }) => {
+        this.setState({
+          apiError: {
+            message: response.data.message
+          }
+        });
+      });
   }
+
+  pollEndpoint = (paymentEndpoint) => {
+    axios.get(`/payment-status/${paymentEndpoint}`).then((response) => {
+      if (response.data === '') {
+        setTimeout(() => {
+          this.pollEndpoint(paymentEndpoint);
+        }, 2000);
+      } else {
+        let errorString = '';
+
+        switch (response.data) {
+          case 'payment_failed':
+            errorString = 'Payment failed, try another card';
+            break;
+          case 'card_not_honored':
+            errorString = 'Card not honored';
+            break;
+          case 'payment_not_supported_by_issuer':
+            errorString = 'Payment not supported by issuer, try another card';
+            break;
+          case 'payment_not_funded':
+            errorString = 'Insufficient funds, try another card';
+            break;
+          case 'card_invalid':
+            errorString = 'Invalid card';
+            break;
+          case 'card_limit_violated':
+            errorString = 'Card limit violated, try another card';
+            break;
+          case 'payment_denied':
+            errorString = 'Payment denied';
+            break;
+          case 'payment_fraud_detected':
+            errorString = 'Payment fraud detected';
+            break;
+          case 'credit_card_not_allowed':
+            errorString = 'Card not honored';
+            break;
+          case 'Payment blocked by issuer':
+            errorString = 'Card not honored';
+            break;
+          case 'card_account_ineligible':
+            errorString = 'Card not eligible for this type of payment';
+            break;
+          default:
+            errorString = 'An unknown error occured';
+        }
+
+        this.setState({
+          apiError: {
+            message: errorString
+          }
+        });
+      }
+    }).catch(({ paymentStatusError }) => {
+      console.log(paymentStatusError);
+    });
+  };
 
   encryptCardData = async (cardDetails, key, keyId) => {
     const decodedPublicKey = atob(key);
@@ -395,6 +464,7 @@ class PaymentForm extends React.Component {
   render() {
     const { isFormComplete } = this.state;
     const { key } = this.state;
+    const { apiError } = this.state;
 
     const { name } = this.state;
     const { email } = this.state;
@@ -489,7 +559,8 @@ class PaymentForm extends React.Component {
               amountEntered: amountEntered.value,
               isFormComplete,
               shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
-              formCompletionHandler: this.formCompletionHandler
+              formCompletionHandler: this.formCompletionHandler,
+              paymentErrorResponse: apiError.message
             }}
             >
               <AmountToPayForm />

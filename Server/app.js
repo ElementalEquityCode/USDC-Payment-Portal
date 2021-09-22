@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 const appRouter = require('./Routes/AppRoute');
 const publicKeyRouter = require('./Routes/PublicKeyRoute');
-const createPaymentRoute = require('./Routes/CreatePaymentRoute');
+const paymentRouter = require('./Routes/PaymentRoute');
 const port = process.env.PORT || 8080;
 
 app.use(publicKeyRouter);
-app.use(createPaymentRoute);
+app.use(paymentRouter);
 app.use(appRouter);
 
 app.listen(port, () => {
