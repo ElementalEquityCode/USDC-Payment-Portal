@@ -16,7 +16,21 @@ paymentRouter.get('/payment-status/:payment_id', (req, res) => {
   };
 
   axios.get(`https://api-sandbox.circle.com/v1/payments/${req.params.payment_id}`, requestOptions).then((response) => {
-    res.send(response.data.data.errorCode);
+    if (response.data.data.errorCode) {
+      res.send({
+        status: response.data.data.errorCode,
+        id: response.data.data.id,
+        amount: response.data.data.amount.amount,
+        date: response.data.data.updateDate
+      });
+    } else if (response.data.data.status) {
+      res.send({
+        status: response.data.data.status,
+        id: response.data.data.id,
+        amount: response.data.data.amount.amount,
+        date: response.data.data.updateDate
+      });
+    }
   }).catch((error) => {
     res.status(404).send({
       paymentStatusError: error.response.data.message

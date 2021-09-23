@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { v4 as UUID } from 'uuid';
+import APIErrorModal from '../APIErrorModal/APIErrorModal';
 import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
 import Grid from '../Grid/Grid';
@@ -8,7 +9,7 @@ import TodaysDate from '../TodaysDate/TodaysDate';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import RequiredLabel from '../RequiredLabel/RequiredLabel';
 import TextField from '../TextField/TextField';
-import APIErrorModal from '../APIErrorModal/APIErrorModal';
+import PaymentConfirmationPage from '../PaymentConfirmationPage/PaymentConfirmationPage';
 import styles from './PaymentForm.module.css';
 
 const openPGP = require('openpgp');
@@ -51,7 +52,13 @@ class PaymentForm extends React.Component {
         value: '',
         isInErrorState: false
       },
-      isFormComplete: false
+      isFormComplete: false,
+      confirmationPage: {
+        amountPaid: '',
+        confirmationCode: '',
+        paymentDate: '',
+        paymentMethod: ''
+      }
     };
   }
 
@@ -342,6 +349,8 @@ class PaymentForm extends React.Component {
       .then((response) => {
         if (response.data.status === 'pending') {
           this.pollEndpoint(response.data.id);
+        } else if (response.data.status === 'confirmed') {
+          console.log('confirmed from here');
         }
       })
       .catch(({ response }) => {
@@ -355,14 +364,23 @@ class PaymentForm extends React.Component {
 
   pollEndpoint = (paymentEndpoint) => {
     axios.get(`/payment-status/${paymentEndpoint}`).then((response) => {
-      if (response.data === '') {
+      if (response.data.status === '' || response.data.status === 'pending') {
         setTimeout(() => {
           this.pollEndpoint(paymentEndpoint);
         }, 2000);
+      } else if (response.data.status === 'confirmed') {
+        this.setState({
+          confirmationPage: {
+            amountPaid: response.data.amount,
+            confirmationCode: response.data.id,
+            paymentDate: response.data.date,
+            paymentMethod: 'Visa •••• 4242'
+          }
+        });
       } else {
         let errorString = '';
 
-        switch (response.data) {
+        switch (response.data.status) {
           case 'payment_failed':
             errorString = 'Payment failed, try another card';
             break;
@@ -461,7 +479,7 @@ class PaymentForm extends React.Component {
     });
   }
 
-  render() {
+  displayPaymentForm = () => {
     const { isFormComplete } = this.state;
     const { key } = this.state;
     const { apiError } = this.state;
@@ -569,6 +587,24 @@ class PaymentForm extends React.Component {
         </div>
       </>
     );
+  }
+
+  displayConfirmationPage = (amountPaid, confirmationCode, paymentDate, paymentMethod) => (
+    <PaymentConfirmationPage
+      amountPaid={amountPaid}
+      confirmationCode={confirmationCode}
+      paymentDate={paymentDate}
+      paymentMethod={paymentMethod}
+    />
+  );
+
+  render() {
+    const { confirmationPage } = this.state;
+    
+    if (confirmationPage.confirmationCode) {
+      return this.displayConfirmationPage(confirmationPage.amountPaid, confirmationPage.confirmationCode, confirmationPage.paymentDate, 'Visa •••• 4242');
+    }
+    return this.displayPaymentForm();
   }
 }
 

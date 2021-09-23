@@ -1,0 +1,94 @@
+.paymentConfirmationPage {
+    background-color: white;
+    border-radius: 4px;
+    width: 40%;
+    margin: 50px auto 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 25%), 0 5px 15px 0 rgb(0 0 0 / 15%);
+}
+
+@media screen and (max-width: 700px) {
+    .paymentConfirmationPage {
+        width: 80%;
+    }
+}
+
+.svgContainer {
+    text-align: center;
+    height: 90px;
+}
+
+.contactForm {
+    display: block;
+    width: 120px;
+    margin: 0 auto;
+}
+
+.checkmark {
+    width: 20px;
+    position: relative;
+    top: -52.5px;
+    left: 25px;
+}
+
+.servicePaidContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.servicePaidContainer p {
+    margin: 0;
+}
+
+.servicePaidLabel {
+    color: rgb(26, 26, 26, 0.6);
+    font-weight: 500;
+}
+
+.amountPaidLabel {
+    color: rgb(26, 26, 26, 0.9);
+    font-weight: 600;
+    font-size: 36px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.container * {
+    padding: 2.5px;
+}
+
+@media screen and (max-width: 1100px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 7.5px;
+    }
+}
+
+.rowHeaderLabel {
+    color: rgb(26, 26, 26, 0.5);
+}
+
+.rowValueLabel {
+    color: rgba(26,26,26,.9);
+}
+
+@media screen and (max-width: 1100px) {
+    .rowHeaderLabel, .rowValueLabel {
+        text-align: center;
+    }
+}
+
+.thankYouLabel {
+    text-align: center;
+    color: rgba(26,26,26,.7);
+    font-weight: 500;
+}
