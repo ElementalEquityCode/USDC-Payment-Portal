@@ -24,12 +24,19 @@ paymentRouter.get('/payment-status/:payment_id', (req, res) => {
         date: response.data.data.updateDate
       });
     } else if (response.data.data.status) {
-      res.send({
-        status: response.data.data.status,
-        id: response.data.data.id,
-        amount: response.data.data.amount.amount,
-        date: response.data.data.updateDate
-      });
+      if (response.data.data.source.id) {
+        axios.get(`https://api-sandbox.circle.com/v1/cards/${response.data.data.source.id}`, requestOptions).then((card) => {
+          res.send({
+            status: response.data.data.status,
+            id: responsef.data.data.id,
+            amount: response.data.data.amount.amount,
+            date: response.data.data.updateDate,
+            paymentMethod: `${card.data.data.network} •••• ${card.data.data.last4}`
+          });
+        }).catch((error) => {
+          res.status(401).send('Error retrieving card data');
+        });
+      }
     }
   }).catch((error) => {
     res.status(404).send({

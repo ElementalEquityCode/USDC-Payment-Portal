@@ -374,7 +374,7 @@ class PaymentForm extends React.Component {
             amountPaid: response.data.amount,
             confirmationCode: response.data.id,
             paymentDate: response.data.date,
-            paymentMethod: 'Visa •••• 4242'
+            paymentMethod: response.data.paymentMethod
           }
         });
       } else {
@@ -600,9 +600,12 @@ class PaymentForm extends React.Component {
 
   render() {
     const { confirmationPage } = this.state;
-    
+
     if (confirmationPage.confirmationCode) {
-      return this.displayConfirmationPage(confirmationPage.amountPaid, confirmationPage.confirmationCode, confirmationPage.paymentDate, 'Visa •••• 4242');
+      return this.displayConfirmationPage(confirmationPage.amountPaid,
+        confirmationPage.confirmationCode,
+        confirmationPage.paymentDate,
+        confirmationPage.paymentMethod);
     }
     return this.displayPaymentForm();
   }
