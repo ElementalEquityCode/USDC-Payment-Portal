@@ -97,6 +97,8 @@ class TextField extends React.Component {
     const { onChangeEvent } = this.props;
 
     let textFieldContainerClassNames = '';
+    let inputType = 'text';
+    let inputMode = '';
 
     if (isFocused) {
       textFieldContainerClassNames = `${styles.textFieldContainer} ${styles.focused}`;
@@ -108,12 +110,20 @@ class TextField extends React.Component {
 
     let maxLength = '50';
 
-    if (type === 'cardNumber') {
+    if (type === 'email') {
+      inputType = 'email';
+    } else if (type === 'cardNumber') {
+      inputType = 'number';
       maxLength = '16';
+      inputMode = 'numeric';
     } else if (type === 'cardExpiry') {
+      inputType = 'number';
       maxLength = '7';
+      inputMode = 'numeric';
     } else if (type === 'cardCVV') {
+      inputType = 'number';
       maxLength = '3';
+      inputMode = 'numeric';
     }
 
     return (
@@ -122,7 +132,8 @@ class TextField extends React.Component {
           value={value}
           maxLength={maxLength}
           className={styles.textField}
-          type="text"
+          type={inputType}
+          inputMode={inputMode}
           placeholder={placeholder}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}

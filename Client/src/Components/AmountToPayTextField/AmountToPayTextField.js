@@ -103,6 +103,7 @@ class AmountToPayTextField extends React.Component {
                 <input
                   value={value}
                   type="text"
+                  inputMode="numeric"
                   className={styles.amountToPayTextField}
                   placeholder="0.00"
                   onFocus={this.handleAmountToPayTextFieldSetFocused}
