@@ -19,6 +19,9 @@ class PaymentForm extends React.Component {
   constructor() {
     super();
 
+    this.paymentFormRef = React.createRef();
+    this.amountToPayFormRef = React.createRef();
+
     this.state = {
       key: {
         keyId: '',
@@ -477,6 +480,22 @@ class PaymentForm extends React.Component {
         }
       });
     });
+
+    this.performModalAnimation();
+  }
+
+  performModalAnimation = () => {
+    if (this.paymentFormRef.current) {
+      setTimeout(() => {
+        this.paymentFormRef.current.classList.add(`${styles.visible}`);
+      }, 500);
+    }
+
+    if (this.amountToPayFormRef.current) {
+      setTimeout(() => {
+        this.amountToPayFormRef.current.classList.add(`${styles.visible}`);
+      }, 1000);
+    }
   }
 
   displayPaymentForm = () => {
@@ -503,7 +522,10 @@ class PaymentForm extends React.Component {
         <div
           className={styles.overallGrid}
         >
-          <div className={styles.paymentForm}>
+          <div
+            className={styles.paymentForm}
+            ref={this.paymentFormRef}
+          >
             <TodaysDate />
             <Grid
               columns="one"
@@ -570,7 +592,10 @@ class PaymentForm extends React.Component {
               />
             </Grid>
           </div>
-          <div className={styles.amountToPayForm}>
+          <div
+            className={styles.amountToPayForm}
+            ref={this.amountToPayFormRef}
+          >
             <ValuesContext.Provider value={{
               name: name.value,
               handleAmountEnteredChanged: this.handleAmountEnteredChanged,
