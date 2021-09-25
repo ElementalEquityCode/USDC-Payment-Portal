@@ -44,7 +44,9 @@ const GeneralActionButton = (props) => {
       <div
         className={generalActionButtonClassNames}
       >
-        <span>
+        <span
+          className={styles.amountEnteredLabel}
+        >
           {amountEntered !== '' ? `Pay $${amountEntered}.00` : children}
         </span>
         <img

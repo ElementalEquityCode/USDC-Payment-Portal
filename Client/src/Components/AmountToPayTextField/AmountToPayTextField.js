@@ -42,7 +42,10 @@ class AmountToPayTextField extends React.Component {
       isInErrorState: value === ''
     });
 
-    consumerValue.handleAmountEnteredChanged(value);
+    consumerValue.handleAmountEnteredChanged({
+      value,
+      wasBlured: true
+    });
   }
 
   handleTextChange = (event, consumerValue) => {
@@ -56,7 +59,10 @@ class AmountToPayTextField extends React.Component {
         value: event.target.value
       }, () => {
         const { value } = this.state;
-        consumerValue.handleAmountEnteredChanged(value);
+        consumerValue.handleAmountEnteredChanged({
+          value,
+          wasBlured: false
+        });
       });
     }
   }

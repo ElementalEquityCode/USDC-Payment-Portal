@@ -28,7 +28,7 @@ paymentRouter.get('/payment-status/:payment_id', (req, res) => {
         axios.get(`https://api-sandbox.circle.com/v1/cards/${response.data.data.source.id}`, requestOptions).then((card) => {
           res.send({
             status: response.data.data.status,
-            id: responsef.data.data.id,
+            id: response.data.data.id,
             amount: response.data.data.amount.amount,
             date: response.data.data.updateDate,
             paymentMethod: `${card.data.data.network} •••• ${card.data.data.last4}`

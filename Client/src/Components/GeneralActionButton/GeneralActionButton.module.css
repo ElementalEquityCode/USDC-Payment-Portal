@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.amountEnteredLabel {
+    font-weight: 700;
+}
+
 .lockIcon {
     width: 12.5px;
     position: relative;

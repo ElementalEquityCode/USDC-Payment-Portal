@@ -113,15 +113,15 @@ class TextField extends React.Component {
     if (type === 'email') {
       inputType = 'email';
     } else if (type === 'cardNumber') {
-      inputType = 'number';
+      inputType = 'text';
       maxLength = '16';
       inputMode = 'numeric';
     } else if (type === 'cardExpiry') {
-      inputType = 'number';
+      inputType = 'text';
       maxLength = '7';
       inputMode = 'numeric';
     } else if (type === 'cardCVV') {
-      inputType = 'number';
+      inputType = 'text';
       maxLength = '3';
       inputMode = 'numeric';
     }

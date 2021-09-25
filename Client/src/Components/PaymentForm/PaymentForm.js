@@ -31,7 +31,11 @@ class PaymentForm extends React.Component {
       apiError: {
         message: ''
       },
-      name: {
+      firstName: {
+        value: '',
+        isInErrorState: false
+      },
+      lastName: {
         value: '',
         isInErrorState: false
       },
@@ -65,10 +69,10 @@ class PaymentForm extends React.Component {
     };
   }
 
-  handleNameChanged = (event) => {
+  handleFirstNameChanged = (event) => {
     if (event) {
       this.setState({
-        name: {
+        firstName: {
           value: event.target.value.trim(),
           isInErrorState: false
         }
@@ -76,12 +80,34 @@ class PaymentForm extends React.Component {
         this.checkIfFormIsComplete();
       });
     } else {
-      const { name } = this.state;
+      const { firstName } = this.state;
 
       this.setState({
-        name: {
-          value: name.value,
-          isInErrorState: name.value.trim().length === 0
+        firstName: {
+          value: firstName.value,
+          isInErrorState: firstName.value.trim().length === 0
+        }
+      });
+    }
+  }
+
+  handleLastNameChanged = (event) => {
+    if (event) {
+      this.setState({
+        lastName: {
+          value: event.target.value.trim(),
+          isInErrorState: false
+        }
+      }, () => {
+        this.checkIfFormIsComplete();
+      });
+    } else {
+      const { lastName } = this.state;
+
+      this.setState({
+        lastName: {
+          value: lastName.value,
+          isInErrorState: lastName.value.trim().length === 0
         }
       });
     }
@@ -176,10 +202,10 @@ class PaymentForm extends React.Component {
   }
 
   handleAmountEnteredChanged = (value) => {
-    if (value) {
+    if (!value.wasBlured) {
       this.setState({
         amountEntered: {
-          value,
+          value: value.value,
           isInErrorState: false
         }
       }, () => {
@@ -191,14 +217,16 @@ class PaymentForm extends React.Component {
       this.setState({
         amountEntered: {
           value: amountEntered.value,
-          isInErrorState: !amountEntered.value.length > 0
+          isInErrorState: !(amountEntered.value.length !== 0)
         }
       });
     }
   }
 
   checkIfFormIsComplete = () => {
-    const { name } = this.state;
+    const { firstName } = this.state;
+    const { lastName } = this.state;
+
     const { email } = this.state;
 
     const { cardNumber } = this.state;
@@ -207,7 +235,8 @@ class PaymentForm extends React.Component {
 
     const { amountEntered } = this.state;
 
-    if (name.value.trim().length !== 0
+    if (firstName.value.trim().length !== 0
+      && lastName.value.trim().length !== 0
       && validator.validate(email.value.trim())
       && cardNumber.value.trim().length === 16
       && cardExpiry.value.trim().length === 7
@@ -229,20 +258,30 @@ class PaymentForm extends React.Component {
     if (isFormComplete) {
       this.createCard();
     } else {
-      const { name } = this.state;
+      const { firstName } = this.state;
+      const { lastName } = this.state;
       const { email } = this.state;
       const { cardNumber } = this.state;
       const { cardExpiry } = this.state;
       const { cardCVV } = this.state;
       const { amountEntered } = this.state;
 
-      if (name.value.trim().length === 0) {
+      if (firstName.value.trim().length === 0) {
         this.setState({
-          name: {
+          firstName: {
             value: '',
             isInErrorState: true
           }
         });
+
+        if (lastName.value.trim().length === 0) {
+          this.setState({
+            lastName: ({
+              value: '',
+              isInErrorState: true
+            })
+          });
+        }
 
         if (!validator.validate(email.value.trim())) {
           this.setState({
@@ -293,7 +332,8 @@ class PaymentForm extends React.Component {
   }
 
   createCard = async () => {
-    const { name } = this.state;
+    const { firstName } = this.state;
+    const { lastName } = this.state;
     const { email } = this.state;
 
     const { cardNumber } = this.state;
@@ -313,19 +353,19 @@ class PaymentForm extends React.Component {
       keyId,
       encryptedData: '',
       billingDetails: {
-        name: name.value,
+        name: `${firstName.value} ${lastName.value}`,
         city: 'Doral',
         country: 'US',
         line1: '11133 NW 71st Ter',
         district: 'FL',
         postalCode: '33178'
-      },
+      }, // Fix this
       expMonth: parseInt(cardExpiryMonth, 10),
       expYear: parseInt(cardExpiryYear, 10),
       metadata: {
         email: email.value,
         sessionId: UUID(),
-        ipAddress: '172.33.222.1'
+        ipAddress: '172.33.222.1' // Fix this
       },
       encryptedCVV: '',
       amount: amountEntered.value
@@ -352,8 +392,8 @@ class PaymentForm extends React.Component {
       .then((response) => {
         if (response.data.status === 'pending') {
           this.pollEndpoint(response.data.id);
-        } else if (response.data.status === 'confirmed') {
-          console.log('confirmed from here');
+        } else if (response.data.status === 'confirmed' || response.data.status === 'success') {
+          console.log('confirmed from here'); // Fix this
         }
       })
       .catch(({ response }) => {
@@ -367,11 +407,11 @@ class PaymentForm extends React.Component {
 
   pollEndpoint = (paymentEndpoint) => {
     axios.get(`/payment-status/${paymentEndpoint}`).then((response) => {
-      if (response.data.status === '' || response.data.status === 'pending') {
+      if (response.data.status === undefined || response.data.status === '' || response.data.status === 'pending') {
         setTimeout(() => {
           this.pollEndpoint(paymentEndpoint);
         }, 2000);
-      } else if (response.data.status === 'confirmed') {
+      } else if (response.data.status === 'confirmed' || response.data.state === 'success') {
         this.setState({
           confirmationPage: {
             amountPaid: response.data.amount,
@@ -503,7 +543,9 @@ class PaymentForm extends React.Component {
     const { key } = this.state;
     const { apiError } = this.state;
 
-    const { name } = this.state;
+    const { firstName } = this.state;
+    const { lastName } = this.state;
+
     const { email } = this.state;
 
     const { cardNumber } = this.state;
@@ -538,13 +580,22 @@ class PaymentForm extends React.Component {
                 >
                   Client Information
                 </SectionLabel>
-                <RequiredLabel shouldDisplay={name.isInErrorState || email.isInErrorState} />
+                <RequiredLabel shouldDisplay={firstName.isInErrorState
+                  || lastName.isInErrorState
+                  || email.isInErrorState}
+                />
               </Grid>
               <TextField
                 type="name"
-                placeholder="Name"
-                onChangeEvent={this.handleNameChanged}
-                shouldDisplayError={name.isInErrorState}
+                placeholder="First Name"
+                onChangeEvent={this.handleFirstNameChanged}
+                shouldDisplayError={firstName.isInErrorState}
+              />
+              <TextField
+                type="name"
+                placeholder="Last Name"
+                onChangeEvent={this.handleLastNameChanged}
+                shouldDisplayError={lastName.isInErrorState}
               />
               <TextField
                 type="email"
@@ -597,7 +648,7 @@ class PaymentForm extends React.Component {
             ref={this.amountToPayFormRef}
           >
             <ValuesContext.Provider value={{
-              name: name.value,
+              name: `${firstName.value} ${lastName.value}`,
               handleAmountEnteredChanged: this.handleAmountEnteredChanged,
               amountEntered: amountEntered.value,
               isFormComplete,
