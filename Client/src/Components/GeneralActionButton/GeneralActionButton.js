@@ -33,22 +33,19 @@ const GeneralActionButton = (props) => {
       onMouseLeave={() => {
         setClickedState(false);
       }}
-      onClick={() => {
-        formCompletionHandler();
-      }}
-      onKeyDown={() => {
-      }}
+      onClick={formCompletionHandler}
+      onKeyDown={formCompletionHandler}
       role="button"
       tabIndex={0}
     >
       <div
         className={generalActionButtonClassNames}
       >
-        <span
+        <p
           className={styles.amountEnteredLabel}
         >
           {amountEntered !== '' ? `Pay $${amountEntered}.00` : children}
-        </span>
+        </p>
         <img
           className={isFormComplete ? `${styles.lockIcon} ${styles.visible}` : `${styles.lockIcon}`}
           alt=""

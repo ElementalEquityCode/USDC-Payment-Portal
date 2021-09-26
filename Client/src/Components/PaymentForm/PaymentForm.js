@@ -60,6 +60,7 @@ class PaymentForm extends React.Component {
         isInErrorState: false
       },
       isFormComplete: false,
+      isPaymentProcessing: false,
       confirmationPage: {
         amountPaid: '',
         confirmationCode: '',
@@ -253,9 +254,10 @@ class PaymentForm extends React.Component {
   }
 
   formCompletionHandler = () => {
+    const { isPaymentProcessing } = this.state;
     const { isFormComplete } = this.state;
 
-    if (isFormComplete) {
+    if (!isPaymentProcessing && isFormComplete) {
       this.createCard();
     } else {
       const { firstName } = this.state;
@@ -388,21 +390,28 @@ class PaymentForm extends React.Component {
       }
     };
 
-    axios.post('/create-card-payment', requestOptions)
-      .then((response) => {
-        if (response.data.status === 'pending') {
-          this.pollEndpoint(response.data.id);
-        } else if (response.data.status === 'confirmed' || response.data.status === 'success') {
-          console.log('confirmed from here'); // Fix this
-        }
-      })
-      .catch(({ response }) => {
-        this.setState({
-          apiError: {
-            message: response.data.message
+    this.setState({
+      isPaymentProcessing: true
+    }, () => {
+      axios.post('/create-card-payment', requestOptions)
+        .then((response) => {
+          if (response.data.status === 'pending') {
+            this.pollEndpoint(response.data.id);
+          } else if (response.data.status === 'confirmed' || response.data.status === 'success') {
+            this.setState({
+              isPaymentProcessing: false
+            });
+            console.log('confirmed from here'); // Fix this
           }
+        })
+        .catch(({ response }) => {
+          this.setState({
+            apiError: {
+              message: response.data.message
+            }
+          });
         });
-      });
+    });
   }
 
   pollEndpoint = (paymentEndpoint) => {
@@ -412,14 +421,19 @@ class PaymentForm extends React.Component {
           this.pollEndpoint(paymentEndpoint);
         }, 2000);
       } else if (response.data.status === 'confirmed' || response.data.state === 'success') {
-        this.setState({
-          confirmationPage: {
-            amountPaid: response.data.amount,
-            confirmationCode: response.data.id,
-            paymentDate: response.data.date,
-            paymentMethod: response.data.paymentMethod
-          }
-        });
+        this.performViewWillDisappearAnimation();
+
+        setTimeout(() => {
+          this.setState({
+            isPaymentProcessing: false,
+            confirmationPage: {
+              amountPaid: response.data.amount,
+              confirmationCode: response.data.id,
+              paymentDate: response.data.date,
+              paymentMethod: response.data.paymentMethod
+            }
+          });
+        }, 1000);
       } else {
         let errorString = '';
 
@@ -462,6 +476,7 @@ class PaymentForm extends React.Component {
         }
 
         this.setState({
+          isPaymentProcessing: false,
           apiError: {
             message: errorString
           }
@@ -521,10 +536,10 @@ class PaymentForm extends React.Component {
       });
     });
 
-    this.performModalAnimation();
+    this.performViewDidAppearAnimation();
   }
 
-  performModalAnimation = () => {
+  performViewDidAppearAnimation = () => {
     if (this.paymentFormRef.current) {
       setTimeout(() => {
         this.paymentFormRef.current.classList.add(`${styles.visible}`);
@@ -535,6 +550,15 @@ class PaymentForm extends React.Component {
       setTimeout(() => {
         this.amountToPayFormRef.current.classList.add(`${styles.visible}`);
       }, 1000);
+    }
+  }
+
+  performViewWillDisappearAnimation = () => {
+    if (this.paymentFormRef.current) {
+      this.paymentFormRef.current.classList.remove(`${styles.visible}`);
+    }
+    if (this.amountToPayFormRef.current) {
+      this.amountToPayFormRef.current.classList.remove(`${styles.visible}`);
     }
   }
 

@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './PaymentConfirmationPage.module.css';
 import ContactForm from '../../Assets/contact-form.svg';
 import CheckMark from '../../Assets/checkmark.svg';
 
 const PaymentConfirmationPage = (props) => {
+  const paymentConfirmationPageRef = useRef();
   const { amountPaid } = props;
   const { confirmationCode } = props;
   const { paymentDate } = props;
   const { paymentMethod } = props;
 
+  const rawDate = new Date(paymentDate);
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const year = rawDate.getFullYear();
+  const month = months[rawDate.getMonth()];
+  const date = rawDate.getDate();
+  const fullDate = `${month}, ${date} ${year}`;
+
+  useEffect(() => {
+    if (paymentConfirmationPageRef.current) {
+      paymentConfirmationPageRef.current.classList.add(`${styles.visible}`);
+    }
+  });
+
   return (
     <div
       className={styles.paymentConfirmationPage}
+      ref={paymentConfirmationPageRef}
     >
       <div
         className={styles.svgContainer}
@@ -68,7 +83,7 @@ const PaymentConfirmationPage = (props) => {
         <span
           className={styles.rowValueLabel}
         >
-          {paymentDate}
+          {fullDate}
         </span>
       </div>
       <div

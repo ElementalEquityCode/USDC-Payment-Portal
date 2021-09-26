@@ -3,6 +3,11 @@
     border-radius: 4px;
     transition: background-color 0.15s ease-out;
     background-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+
+.generalActionButtonContainer:focus {
+    background-color: rgb(197, 217, 235);
 }
 
 .clicked {
