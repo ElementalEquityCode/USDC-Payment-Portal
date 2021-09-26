@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+import Lottie from 'lottie-react';
 import styles from './GeneralActionButton.module.css';
 import ValuesContext from '../../Contexts/ValuesContext';
 import Lock from '../../Assets/lock.svg';
+import Animation from '../../Assets/loading-animation.json';
 
 const GeneralActionButton = (props) => {
   const [isClicked, setClickedState] = useState(false);
@@ -11,6 +13,7 @@ const GeneralActionButton = (props) => {
   const { amountEntered } = values;
   const { isFormComplete } = values;
   const { formCompletionHandler } = values;
+  const { isPaymentProcessing } = values;
   const { children } = props;
 
   let generalActionButtonClassNames = '';
@@ -46,12 +49,22 @@ const GeneralActionButton = (props) => {
         >
           {amountEntered !== '' ? `Pay $${amountEntered}.00` : children}
         </p>
-        <img
-          className={isFormComplete ? `${styles.lockIcon} ${styles.visible}` : `${styles.lockIcon}`}
-          alt=""
-          src={Lock}
-        />
       </div>
+      <img
+        className={isFormComplete && !isPaymentProcessing ? `${styles.lockIcon} ${styles.visible}` : `${styles.lockIcon}`}
+        alt=""
+        src={Lock}
+      />
+      {isPaymentProcessing && isFormComplete
+        ? (
+          <div
+            className={styles.lottieContainer}
+          >
+            <Lottie
+              animationData={Animation}
+            />
+          </div>
+        ) : null}
     </div>
   );
 };

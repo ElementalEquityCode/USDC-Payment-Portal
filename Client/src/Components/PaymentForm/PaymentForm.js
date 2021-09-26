@@ -578,6 +578,8 @@ class PaymentForm extends React.Component {
 
     const { amountEntered } = this.state;
 
+    const { isPaymentProcessing } = this.state;
+
     return (
       <>
         <APIErrorModal
@@ -678,7 +680,8 @@ class PaymentForm extends React.Component {
               isFormComplete,
               shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
               formCompletionHandler: this.formCompletionHandler,
-              paymentErrorResponse: apiError.message
+              paymentErrorResponse: apiError.message,
+              isPaymentProcessing
             }}
             >
               <AmountToPayForm />
