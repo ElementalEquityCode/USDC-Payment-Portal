@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './TextField.module.css';
 import ExclamationError from '../ExclamationError/ExclamationError';
+import CreditCardIcons from '../CreditCardIcons/CreditCardIcons';
 
 const luhn = require('luhn');
 const validator = require('email-validator');
@@ -159,6 +160,12 @@ class TextField extends React.Component {
           }}
         />
         <ExclamationError labelType="TextField" shouldDisplay={(isInErrorState && !isFocused) || (shouldDisplayError && value.length === 0)} />
+        {type === 'cardNumber' ? (
+          <CreditCardIcons
+            shouldDisplay={!shouldDisplayError}
+            cardNumber={value}
+          />
+        ) : null}
       </div>
     );
   }

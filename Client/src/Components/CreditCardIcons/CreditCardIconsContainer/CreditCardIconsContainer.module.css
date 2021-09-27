@@ -1,0 +1,27 @@
+.creditCardIconsContainer {
+    position: relative;
+    float: right;
+    right: -10.5px;
+    bottom: 28px;
+    display: grid;
+    grid-template-areas: "row";
+    transform: scale(0, 0);
+    transition: transform 0.3s ease-out;
+}
+
+.visibleComponent {
+    transform: scale(1, 1);
+}
+
+.creditCardIcon {
+    width: 25px;
+    grid-area: row;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    z-index: 999;
+}
