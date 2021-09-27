@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './TextField.module.css';
 import ExclamationError from '../ExclamationError/ExclamationError';
 
+const luhn = require('luhn');
 const validator = require('email-validator');
 
 class TextField extends React.Component {
@@ -48,16 +49,32 @@ class TextField extends React.Component {
   }
 
   testInputAgainstRegex = (regex, value) => {
-    if (regex.test(value) && value.trim().length > 0) {
-      this.setState({
-        isInErrorState: false,
-        isFocused: false
-      });
-    } else {
-      this.setState({
-        isInErrorState: true,
-        isFocused: false
-      });
+    const { type } = this.props;
+
+    if (type === 'cardNumber') {
+      if (regex.test(value) && value.trim().length > 0) {
+        this.setState({
+          isInErrorState: !luhn.validate(value),
+          isFocused: false
+        });
+      } else {
+        this.setState({
+          isInErrorState: true,
+          isFocused: false
+        });
+      }
+    } else if (type !== 'cardNumber') {
+      if (regex.test(value) && value.trim().length > 0) {
+        this.setState({
+          isInErrorState: false,
+          isFocused: false
+        });
+      } else {
+        this.setState({
+          isInErrorState: true,
+          isFocused: false
+        });
+      }
     }
   }
 
