@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Lottie from 'lottie-react';
 import styles from './GeneralActionButton.module.css';
@@ -7,6 +7,7 @@ import Lock from '../../Assets/lock.svg';
 import Animation from '../../Assets/loading-animation.json';
 
 const GeneralActionButton = (props) => {
+  const ref = useRef(null);
   const [isClicked, setClickedState] = useState(false);
 
   const values = useContext(ValuesContext);
@@ -30,8 +31,22 @@ const GeneralActionButton = (props) => {
       onMouseDown={() => {
         setClickedState(true);
       }}
+      onTouchStart={() => {
+        setClickedState(true);
+      }}
       onMouseUp={() => {
         setClickedState(false);
+        if (ref.current) {
+          ref.current.blur();
+          console.log('clicked here');
+        }
+      }}
+      onTouchEnd={() => {
+        setClickedState(false);
+        if (ref.current) {
+          ref.current.blur();
+          console.log('clicked here');
+        }
       }}
       onMouseLeave={() => {
         setClickedState(false);
@@ -40,6 +55,7 @@ const GeneralActionButton = (props) => {
       onKeyDown={formCompletionHandler}
       role="button"
       tabIndex={0}
+      ref={ref}
     >
       <div
         className={generalActionButtonClassNames}
