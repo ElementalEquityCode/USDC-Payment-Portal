@@ -6,6 +6,8 @@ import CreditCardIcons from '../CreditCardIcons/CreditCardIcons';
 
 const luhn = require('luhn');
 const validator = require('email-validator');
+const creditCardType = require('credit-card-type');
+const CardType = require('credit-card-type').types;
 
 class TextField extends React.Component {
   constructor() {
@@ -15,6 +17,25 @@ class TextField extends React.Component {
       isFocused: false,
       isInErrorState: false
     };
+  }
+
+  prettyCardNumber = (cardNumber) => {
+    const card = creditCardType.getTypeInfo(CardType.VISA);
+
+    if (card) {
+      const offsets = [].concat(0, card.gaps, cardNumber.length);
+      const components = [];
+
+      for (let i = 0; offsets[i] < cardNumber.length; i += 1) {
+        const start = offsets[i];
+        const end = Math.min(offsets[i + 1], cardNumber.length);
+        components.push(cardNumber.substring(start, end));
+      }
+
+      return components.join(' ');
+    }
+
+    return cardNumber;
   }
 
   handleFocus = () => {
@@ -39,7 +60,7 @@ class TextField extends React.Component {
         isFocused: false
       });
     } else if (type === 'cardNumber') {
-      this.testInputAgainstRegex(/^((\d{16})?)$/, value);
+      this.testInputAgainstRegex(/^((\d{0,4})\s(\d{0,4})\s(\d{0,4})\s(\d{0,4})?)$/, value);
     } else if (type === 'cardExpiry') {
       this.testInputAgainstRegex(/^(((\d{2})(\/)(\d{4}))?)$/, value);
     } else if (type === 'cardCVV') {
@@ -82,11 +103,13 @@ class TextField extends React.Component {
   handleTextChange = (event, onChangeEvent) => {
     const { type } = this.props;
     let regex = /.*/;
+    let formattedCardNumber = event.target.value;
 
     if (type === 'cardNumber') {
-      regex = /^((\d{0,16})?)$/;
+      regex = /^(((\d{0,4})(\s?)(\d{0,4})(\s?)(\d{0,4})(\s?)(\d{0,4}))?)$/;
+      formattedCardNumber = this.prettyCardNumber(event.target.value.replace(/\s/g, ''));
     } else if (type === 'cardExpiry') {
-      regex = /(^(((\d{0,2})?(\/)(\d{0,4})?))$)?/;
+      regex = /(^((\d{0,2})?(\/)(\d{0,4})?))$/;
     } else if (type === 'cardCVV') {
       regex = /^((\d{0,3})?)$/;
     }
@@ -96,7 +119,7 @@ class TextField extends React.Component {
       });
     } else {
       this.setState({
-        value: event.target.value
+        value: type === 'cardNumber' ? formattedCardNumber : event.target.value
       }, () => {
         if (onChangeEvent) {
           onChangeEvent(event);
@@ -132,7 +155,7 @@ class TextField extends React.Component {
       inputType = 'email';
     } else if (type === 'cardNumber') {
       inputType = 'text';
-      maxLength = '16';
+      maxLength = '19';
       inputMode = 'numeric';
     } else if (type === 'cardExpiry') {
       inputType = 'text';

@@ -5,6 +5,8 @@ import CardIcon from './CardIcon/CardIcon';
 import Visa from '../../Assets/visa-icon.svg';
 import MasterCard from '../../Assets/mastercard-icon.svg';
 
+const creditCardType = require('credit-card-type');
+
 class CreditCardIcons extends React.Component {
   constructor() {
     super();
@@ -13,11 +15,23 @@ class CreditCardIcons extends React.Component {
   }
 
   renderCardIcon = (cardNumber) => {
+    const cardInfo = creditCardType(cardNumber);
+    let card = null;
     let icon = null;
 
-    if (cardNumber[0] === '4') {
+    if (!cardNumber) {
+      return null;
+    }
+
+    if (cardInfo.length !== 0) {
+      if (cardInfo[0].niceType) {
+        card = cardInfo[0].niceType;
+      }
+    }
+
+    if (card === 'Visa') {
       icon = <CardIcon logo={Visa} />;
-    } else if (cardNumber[0] === '5') {
+    } else if (card === 'Mastercard') {
       icon = <CardIcon logo={MasterCard} />;
     }
 
@@ -27,16 +41,14 @@ class CreditCardIcons extends React.Component {
   render() {
     const { shouldDisplay } = this.props;
     const { cardNumber } = this.props;
-
     const cardIcon = this.renderCardIcon(cardNumber);
 
     if (shouldDisplay) {
-      if (cardIcon) {
-        return cardIcon;
+      if (cardIcon === null || cardIcon === 'null') {
+        return <CreditCardIconsContainer />;
       }
-      return <CreditCardIconsContainer shouldDisplay={shouldDisplay} />;
     }
-    return null;
+    return cardIcon;
   }
 }
 

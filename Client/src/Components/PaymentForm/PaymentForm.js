@@ -152,7 +152,7 @@ class PaymentForm extends React.Component {
       this.setState({
         cardNumber: {
           value: cardNumber.value,
-          isInErrorState: cardNumber.value.length !== 16
+          isInErrorState: cardNumber.value.length !== 19
         }
       });
     }
@@ -239,7 +239,7 @@ class PaymentForm extends React.Component {
     if (firstName.value.trim().length !== 0
       && lastName.value.trim().length !== 0
       && validator.validate(email.value.trim())
-      && cardNumber.value.trim().length === 16
+      && cardNumber.value.trim().length === 19
       && cardExpiry.value.trim().length === 7
       && cardCVV.value.trim().length === 3
       && amountEntered.value.trim().length !== 0) {
@@ -293,7 +293,7 @@ class PaymentForm extends React.Component {
             }
           });
 
-          if (cardNumber.value.length !== 16) {
+          if (cardNumber.value.length !== 19) {
             this.setState({
               cardNumber: {
                 value: cardNumber.value,
