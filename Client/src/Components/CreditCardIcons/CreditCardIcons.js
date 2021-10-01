@@ -46,9 +46,11 @@ class CreditCardIcons extends React.Component {
     if (shouldDisplay) {
       if (cardIcon === null || cardIcon === 'null') {
         return <CreditCardIconsContainer />;
+      } else {
+        return cardIcon;
       }
     }
-    return cardIcon;
+    return null;
   }
 }
 

@@ -254,10 +254,11 @@ class PaymentForm extends React.Component {
   }
 
   formCompletionHandler = () => {
+    const { key } = this.state;
     const { isPaymentProcessing } = this.state;
     const { isFormComplete } = this.state;
 
-    if (!isPaymentProcessing && isFormComplete) {
+    if (!isPaymentProcessing && isFormComplete && key.publicKey) {
       this.createCard();
     } else {
       const { firstName } = this.state;

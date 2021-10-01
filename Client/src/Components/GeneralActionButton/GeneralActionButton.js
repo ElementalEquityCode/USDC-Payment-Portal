@@ -38,14 +38,12 @@ const GeneralActionButton = (props) => {
         setClickedState(false);
         if (ref.current) {
           ref.current.blur();
-          console.log('clicked here');
         }
       }}
       onTouchEnd={() => {
         setClickedState(false);
         if (ref.current) {
           ref.current.blur();
-          console.log('clicked here');
         }
       }}
       onMouseLeave={() => {

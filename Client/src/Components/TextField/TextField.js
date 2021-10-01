@@ -38,6 +38,49 @@ class TextField extends React.Component {
     return cardNumber;
   }
 
+  prettyDate = (date) => {
+    if (date === '/') {
+      return '';
+    } else if ((/^(\d\/(\d{0,4}))$/).test(date)) {
+      return '';
+    } else if (date.length === 3 && date[date.length - 1] === '/') {
+      return date.substring(0, 2);
+    } else if (date === '00') {
+      return '0';
+    } else if (date.length === 1 && date === '2') {
+      return '02';
+    } else if (date.length === 1 && date === '3') {
+      return '03';
+    } else if (date.length === 1 && date === '4') {
+      return '04';
+    } else if (date.length === 1 && date === '5') {
+      return '05';
+    } else if (date.length === 1 && date === '6') {
+      return '06';
+    } else if (date.length === 1 && date === '7') {
+      return '07';
+    } else if (date.length === 1 && date === '8') {
+      return '08';
+    } else if (date.length === 1 && date === '9') {
+      return '09';
+    } else if ((date.length === 2) && (date[0] === '1') && (parseInt(date[1], 10) >= 3)) {
+      return date.substring(0, 1);
+    } else if (date && !date.includes('/') && date.length > 1) {
+      const offsets = [].concat(0, [2], date.length);
+      const components = [];
+
+      for (let i = 0; offsets[i] < date.length; i += 1) {
+        const start = offsets[i];
+        const end = Math.min(offsets[i + 1], date.length);
+        components.push(date.substring(start, end));
+      }
+
+      return components.join('/');
+    }
+
+    return date;
+  }
+
   handleFocus = () => {
     this.setState({
       isFocused: true
@@ -62,7 +105,7 @@ class TextField extends React.Component {
     } else if (type === 'cardNumber') {
       this.testInputAgainstRegex(/^((\d{0,4})\s(\d{0,4})\s(\d{0,4})\s(\d{0,4})?)$/, value);
     } else if (type === 'cardExpiry') {
-      this.testInputAgainstRegex(/^(((\d{2})(\/)(\d{4}))?)$/, value);
+      this.testInputAgainstRegex(/(^((\d{0,2})?\/?(\d{0,4})?)?)$/, value);
     } else if (type === 'cardCVV') {
       this.testInputAgainstRegex(/^((\d{3})?)$/, value);
     }
@@ -104,12 +147,14 @@ class TextField extends React.Component {
     const { type } = this.props;
     let regex = /.*/;
     let formattedCardNumber = event.target.value;
+    let formattedDate = event.target.value;
 
     if (type === 'cardNumber') {
       regex = /^(((\d{0,4})(\s?)(\d{0,4})(\s?)(\d{0,4})(\s?)(\d{0,4}))?)$/;
       formattedCardNumber = this.prettyCardNumber(event.target.value.replace(/\s/g, ''));
     } else if (type === 'cardExpiry') {
-      regex = /(^((\d{0,2})?(\/)(\d{0,4})?))$/;
+      regex = /(^((\d{0,2})?\/?(\d{0,4})?)?)$/;
+      formattedDate = this.prettyDate(event.target.value);
     } else if (type === 'cardCVV') {
       regex = /^((\d{0,3})?)$/;
     }
@@ -117,14 +162,32 @@ class TextField extends React.Component {
     if (!regex.test(event.target.value)) {
       this.setState({
       });
-    } else {
-      this.setState({
-        value: type === 'cardNumber' ? formattedCardNumber : event.target.value
-      }, () => {
-        if (onChangeEvent) {
-          onChangeEvent(event);
-        }
-      });
+    } else if (regex.test(event.target.value)) {
+      if (type !== 'cardNumber' && type !== 'cardExpiry') {
+        this.setState({
+          value: event.target.value
+        }, () => {
+          if (onChangeEvent) {
+            onChangeEvent(event);
+          }
+        });
+      } else if (type === 'cardNumber') {
+        this.setState({
+          value: formattedCardNumber
+        }, () => {
+          if (onChangeEvent) {
+            onChangeEvent(event);
+          }
+        });
+      } else if (type === 'cardExpiry') {
+        this.setState({
+          value: formattedDate
+        }, () => {
+          if (onChangeEvent) {
+            onChangeEvent(event);
+          }
+        });
+      }
     }
   }
 
@@ -185,7 +248,7 @@ class TextField extends React.Component {
         <ExclamationError labelType="TextField" shouldDisplay={(isInErrorState && !isFocused) || (shouldDisplayError && value.length === 0)} />
         {type === 'cardNumber' ? (
           <CreditCardIcons
-            shouldDisplay={!shouldDisplayError}
+            shouldDisplay={!shouldDisplayError || isFocused}
             cardNumber={value}
           />
         ) : null}
