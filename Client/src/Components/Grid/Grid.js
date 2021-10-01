@@ -8,22 +8,26 @@ const Grid = (props) => {
 
   if (columns === 'two') {
     return (
-      <div className={`${styles.two}`}>
+      <div
+        className={`${styles.two}`}
+      >
         {children}
       </div>
     );
   }
 
   return (
-    <div className={`${styles.one}`}>
+    <div
+      className={`${styles.one}`}
+    >
       {children}
     </div>
   );
 };
 
 Grid.propTypes = {
-  columns: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.element)
+  columns: PropTypes.string.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired
 };
 
 export default Grid;

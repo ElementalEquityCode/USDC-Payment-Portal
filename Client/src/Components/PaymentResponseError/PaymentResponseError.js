@@ -7,7 +7,11 @@ const PaymentResponseError = (props) => {
   const { shouldDisplay } = props;
 
   return (
-    <span className={shouldDisplay ? `${styles.paymentResponseError} ${styles.visible}` : `${styles.paymentResponseError}`}>{children}</span>
+    <span
+      className={shouldDisplay ? `${styles.paymentResponseError} ${styles.visible}` : `${styles.paymentResponseError}`}
+    >
+      {children}
+    </span>
   );
 };
 

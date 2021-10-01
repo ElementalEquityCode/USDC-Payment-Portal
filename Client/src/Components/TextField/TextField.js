@@ -231,7 +231,9 @@ class TextField extends React.Component {
     }
 
     return (
-      <div className={textFieldContainerClassNames}>
+      <div
+        className={textFieldContainerClassNames}
+      >
         <input
           value={value}
           maxLength={maxLength}
@@ -245,7 +247,13 @@ class TextField extends React.Component {
             this.handleTextChange(event, onChangeEvent);
           }}
         />
-        <ExclamationError labelType="TextField" shouldDisplay={(isInErrorState && !isFocused) || (shouldDisplayError && value.length === 0)} />
+        <ExclamationError
+          labelType="TextField"
+          shouldDisplay={
+            (isInErrorState && !isFocused)
+            || (shouldDisplayError && value.length === 0)
+          }
+        />
         {type === 'cardNumber' ? (
           <CreditCardIcons
             shouldDisplay={!shouldDisplayError || isFocused}
@@ -258,10 +266,10 @@ class TextField extends React.Component {
 }
 
 TextField.propTypes = {
-  type: PropTypes.string,
+  type: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  onChangeEvent: PropTypes.func,
-  shouldDisplayError: PropTypes.bool
+  onChangeEvent: PropTypes.func.isRequired,
+  shouldDisplayError: PropTypes.bool.isRequired
 };
 
 export default TextField;

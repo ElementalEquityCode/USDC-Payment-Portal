@@ -25,7 +25,7 @@ const CardIcon = (props) => {
 };
 
 CardIcon.propTypes = {
-  logo: PropTypes.string
+  logo: PropTypes.string.isRequired
 };
 
 export default CardIcon;

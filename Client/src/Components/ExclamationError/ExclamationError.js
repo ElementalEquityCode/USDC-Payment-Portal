@@ -44,7 +44,7 @@ class ExclamationError extends React.Component {
 
 ExclamationError.propTypes = {
   labelType: PropTypes.string,
-  shouldDisplay: PropTypes.bool
+  shouldDisplay: PropTypes.bool.isRequired
 };
 
 export default ExclamationError;

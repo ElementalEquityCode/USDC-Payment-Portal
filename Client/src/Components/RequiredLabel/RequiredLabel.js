@@ -6,12 +6,16 @@ const RequiredLabel = (props) => {
   const { shouldDisplay } = props;
 
   return (
-    <p className={shouldDisplay ? `${styles.requiredLabel} ${styles.visible}` : `${styles.requiredLabel}`}>Required</p>
+    <p
+      className={shouldDisplay ? `${styles.requiredLabel} ${styles.visible}` : `${styles.requiredLabel}`}
+    >
+      Required
+    </p>
   );
 };
 
 RequiredLabel.propTypes = {
-  shouldDisplay: PropTypes.bool
+  shouldDisplay: PropTypes.bool.isRequired
 };
 
 export default RequiredLabel;

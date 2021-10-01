@@ -103,8 +103,14 @@ class AmountToPayTextField extends React.Component {
                 role="textbox"
                 tabIndex={0}
               >
-                <div className={styles.dollarSignContainer}>
-                  <span className={styles.dollarSign}>$</span>
+                <div
+                  className={styles.dollarSignContainer}
+                >
+                  <span
+                    className={styles.dollarSign}
+                  >
+                    $
+                  </span>
                 </div>
                 <input
                   value={value}
@@ -122,7 +128,8 @@ class AmountToPayTextField extends React.Component {
                   }}
                 />
               </div>
-              <ExclamationError shouldDisplay={(isInErrorState && !isFocused)
+              <ExclamationError
+                shouldDisplay={(isInErrorState && !isFocused)
               || (consumerValue.shouldDisplayAmountEnteredError && value.length === 0)}
               />
             </>

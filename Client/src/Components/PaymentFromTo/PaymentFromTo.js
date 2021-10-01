@@ -8,13 +8,21 @@ const PaymentFromTo = (props) => {
   const { to } = props;
 
   return (
-    <div className={styles.paymentFromTo}>
-      <div className={styles.innerContainer}>
-        <p className={styles.text}>
+    <div
+      className={styles.paymentFromTo}
+    >
+      <div
+        className={styles.innerContainer}
+      >
+        <p
+          className={styles.text}
+        >
           From:
           {` ${name}`}
         </p>
-        <p className={styles.text}>
+        <p
+          className={styles.text}
+        >
           To:
           {` ${to}`}
         </p>
@@ -24,7 +32,7 @@ const PaymentFromTo = (props) => {
 };
 
 PaymentFromTo.propTypes = {
-  to: PropTypes.string
+  to: PropTypes.string.isRequired
 };
 
 export default PaymentFromTo;

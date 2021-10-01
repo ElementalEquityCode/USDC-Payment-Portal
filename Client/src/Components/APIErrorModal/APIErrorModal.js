@@ -8,18 +8,30 @@ const APIErrorModal = (props) => {
   const { shouldDisplay } = props;
 
   return (
-    <div className={shouldDisplay ? `${styles.apiErrorModal} ${styles.visible}` : `${styles.apiErrorModal}`}>
-      <div className={styles.container}>
-        <img className={styles.infoIcon} alt="" src={InfoIcon} />
-        <span className={styles.apiErrorModalText}>{children}</span>
+    <div
+      className={shouldDisplay ? `${styles.apiErrorModal} ${styles.visible}` : `${styles.apiErrorModal}`}
+    >
+      <div
+        className={styles.container}
+      >
+        <img
+          className={styles.infoIcon}
+          alt=""
+          src={InfoIcon}
+        />
+        <span
+          className={styles.apiErrorModalText}
+        >
+          {children}
+        </span>
       </div>
     </div>
   );
 };
 
 APIErrorModal.propTypes = {
-  children: PropTypes.string,
-  shouldDisplay: PropTypes.bool
+  children: PropTypes.string.isRequired,
+  shouldDisplay: PropTypes.bool.isRequired
 };
 
 export default APIErrorModal;

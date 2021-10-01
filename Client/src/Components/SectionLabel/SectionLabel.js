@@ -7,7 +7,11 @@ const SectionLabel = (props) => {
   const { type } = props;
 
   return (
-    <p className={`${styles.sectionLabel} ${type === 'light' ? `${styles.light}` : `${styles.dark}`}`}>{children}</p>
+    <p
+      className={`${styles.sectionLabel} ${type === 'light' ? `${styles.light}` : `${styles.dark}`}`}
+    >
+      {children}
+    </p>
   );
 };
 

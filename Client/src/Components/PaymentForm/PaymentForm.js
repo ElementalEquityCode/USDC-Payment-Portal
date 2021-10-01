@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { v4 as UUID } from 'uuid';
+import { productionInstance as axios } from '../../Axios/Axios';
 import APIErrorModal from '../APIErrorModal/APIErrorModal';
 import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
@@ -375,7 +375,7 @@ class PaymentForm extends React.Component {
     };
 
     const cardDetails = {
-      number: cardNumber.value,
+      number: cardNumber.value.replace(/\s/g, ''),
       cvv: cardCVV.value
     };
 
@@ -407,6 +407,7 @@ class PaymentForm extends React.Component {
         })
         .catch(({ response }) => {
           this.setState({
+            isPaymentProcessing: false,
             apiError: {
               message: response.data.message
             }
@@ -607,7 +608,8 @@ class PaymentForm extends React.Component {
                 >
                   Client Information
                 </SectionLabel>
-                <RequiredLabel shouldDisplay={firstName.isInErrorState
+                <RequiredLabel
+                  shouldDisplay={firstName.isInErrorState
                   || lastName.isInErrorState
                   || email.isInErrorState}
                 />

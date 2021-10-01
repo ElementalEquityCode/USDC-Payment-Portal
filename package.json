@@ -1,0 +1,13 @@
+{
+  "name": "usdc-payment-portal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd Client && npm install && npm run build",
+    "start": "cd Server && npm install && npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}

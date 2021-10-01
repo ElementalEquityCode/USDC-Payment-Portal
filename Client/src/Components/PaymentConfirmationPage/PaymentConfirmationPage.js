@@ -110,10 +110,10 @@ const PaymentConfirmationPage = (props) => {
 };
 
 PaymentConfirmationPage.propTypes = {
-  amountPaid: PropTypes.string,
-  confirmationCode: PropTypes.string,
-  paymentDate: PropTypes.string,
-  paymentMethod: PropTypes.string
+  amountPaid: PropTypes.string.isRequired,
+  confirmationCode: PropTypes.string.isRequired,
+  paymentDate: PropTypes.string.isRequired,
+  paymentMethod: PropTypes.string.isRequired
 };
 
 export default PaymentConfirmationPage;

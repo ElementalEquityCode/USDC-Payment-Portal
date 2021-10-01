@@ -55,8 +55,8 @@ class CreditCardIcons extends React.Component {
 }
 
 CreditCardIcons.propTypes = {
-  shouldDisplay: PropTypes.bool,
-  cardNumber: PropTypes.string
+  shouldDisplay: PropTypes.bool.isRequired,
+  cardNumber: PropTypes.string.isRequired
 };
 
 export default CreditCardIcons;
