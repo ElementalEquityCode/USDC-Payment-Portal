@@ -7,6 +7,10 @@
     outline: none;
 }
 
+.generalActionButtonContainer, .generalActionButtonContainer * {
+    user-select: none;
+}
+
 .generalActionButtonContainer:focus {
     background-color: rgb(197, 217, 235);
 }
@@ -37,7 +41,6 @@
 
 .amountEnteredLabel {
     font-weight: 700;
-    user-select: none;
 }
 
 .lockIcon {

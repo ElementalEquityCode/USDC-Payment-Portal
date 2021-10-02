@@ -21,6 +21,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "comma-dangle": [0],
         "react/require-default-props": "off",
-        "no-else-return": "off"
+        "no-else-return": "off",
+        "react/self-closing-comp": "off"
       }
 }

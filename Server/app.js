@@ -8,6 +8,7 @@ const port = process.env.PORT || 8080;
 
 app.use(enforce.HTTPS({trustProtoHeader: true}));
 app.use((req, res, next) => {
+  console.log('here');
   res.set('Access-Control-Allow-Origin', 'https://test.iredullc.com');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
   next();

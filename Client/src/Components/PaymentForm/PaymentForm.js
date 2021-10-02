@@ -2,6 +2,7 @@ import React from 'react';
 import { v4 as UUID } from 'uuid';
 import { productionInstance as axios } from '../../Axios/Axios';
 import APIErrorModal from '../APIErrorModal/APIErrorModal';
+import UIModeSwitch from '../UIModeSwitch/UIModeSwitch';
 import AmountToPayForm from '../AmountToPayForm/AmountToPayForm';
 import ValuesContext from '../../Contexts/ValuesContext';
 import Grid from '../Grid/Grid';
@@ -589,6 +590,7 @@ class PaymentForm extends React.Component {
         >
           Error retrieving public key. Transactions will not process - refresh page
         </APIErrorModal>
+        <UIModeSwitch />
         <div
           className={styles.overallGrid}
         >
