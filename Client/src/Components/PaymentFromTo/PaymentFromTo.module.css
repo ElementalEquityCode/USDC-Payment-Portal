@@ -1,14 +1,16 @@
+@import '../../App.css';
+
 .paymentFromTo {
     box-sizing: border-box;
 }
 
 .innerContainer {
-    background-color: #f2f4f8;
+    background-color: var(--secondary-elevated-background-color);
     padding: 20px;
     border-radius: 4px;
 }
 
 .text {
-    color: rgb(65, 71, 78);
+    color: var(--label-color);
     word-break: break-all;
 }

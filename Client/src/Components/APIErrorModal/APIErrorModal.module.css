@@ -1,5 +1,7 @@
+@import '../../App.css';
+
 .apiErrorModal {
-    background-color: white;
+    background-color: var(--elevated-background-color);
     padding: 10px;
     box-sizing: border-box;
     box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 25%), 0 5px 15px 0 rgb(0 0 0 / 15%);
@@ -31,6 +33,7 @@
 }
 
 .apiErrorModalText {
+    color: var(--label-color);
     margin-left: 5px;
     text-align: center;
     font-weight: 300;

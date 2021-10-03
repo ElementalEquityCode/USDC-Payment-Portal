@@ -1,6 +1,8 @@
+@import '../../App.css';
+
 .sectionLabel {
     font-weight: 600;
-    color: rgb(65, 71, 78);
+    color: var(--label-color);
     padding: 0;
     margin: 0;
 }
@@ -10,5 +12,5 @@
 }
 
 .dark {
-    color: rgb(65, 71, 78);
+    color: var(--label-color);
 }

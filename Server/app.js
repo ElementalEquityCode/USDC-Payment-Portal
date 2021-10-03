@@ -6,7 +6,7 @@ const publicKeyRouter = require('./Routes/PublicKeyRoute');
 const paymentRouter = require('./Routes/PaymentRoute');
 const port = process.env.PORT || 8080;
 
-app.use(enforce.HTTPS({trustProtoHeader: true}));
+// app.use(enforce.HTTPS({trustProtoHeader: true}));
 app.use((req, res, next) => {
   console.log('here');
   res.set('Access-Control-Allow-Origin', 'https://test.iredullc.com');

@@ -1,3 +1,5 @@
+@import '../../App.css';
+
 .uiModeSwitchContainer {
     display: flex;
     flex-direction: column;
@@ -16,36 +18,25 @@
     height: 25px;
     border-radius: 25px;
     padding: 5px;
-    background-color: white;
+    background-color: var(--elevated-background-color);
     transition: background-color 0.2s ease-out;
     outline: none;
-}
-
-.darkUIModeSwitch {
-    background-color: rgb(23, 28, 36);
-}
-
-.switchContainer {
-    background-color: white;
-    height: 25px;
-    width: 25px;
-    border-radius: 12.5px;
-    transition: transform 0.2s ease-out;
-}
-
-.darkSwitchContainer {
-    transform: translateX(35px);
 }
 
 .switch {
     height: 25px;
     width: 25px;
     border-radius: 12.5px;
-    background-color: rgba(84,51,255,.6);
+    background-color: var(--primary-color);
+    transition: transform 0.2s ease-out;
+}
+
+.darkSwitch {
+    transform: translateX(35px);
 }
 
 .modeLabel {
-    color: rgba(26,26,26,.7);
+    color: var(--primary-header-color);
     margin-top: 2.5px;
     font-weight: 600;
     font-size: 0.85em;

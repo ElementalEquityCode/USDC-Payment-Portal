@@ -1,5 +1,7 @@
+@import '../../App.css';
+
 .paymentConfirmationPage {
-    background-color: white;
+    background-color: var(--elevated-background-color);
     border-radius: 4px;
     width: 40%;
     margin: 50px auto 0 auto;
@@ -51,12 +53,12 @@
 }
 
 .servicePaidLabel {
-    color: rgb(26, 26, 26, 0.6);
+    color: var(--primary-header-color);
     font-weight: 500;
 }
 
 .amountPaidLabel {
-    color: rgb(26, 26, 26, 0.9);
+    color: var(--input-color);
     font-weight: 600;
     font-size: 36px;
 }
@@ -75,11 +77,11 @@
 }
 
 .rowHeaderLabel {
-    color: rgb(26, 26, 26, 0.5);
+    color: var(--primary-header-color);
 }
 
 .rowValueLabel {
-    color: rgba(26,26,26,.9);
+    color: var(--label-color);
 }
 
 @media screen and (max-width: 1100px) {
@@ -90,6 +92,6 @@
 
 .thankYouLabel {
     text-align: center;
-    color: rgba(26,26,26,.7);
+    color: var(--primary-header-color);
     font-weight: 500;
 }

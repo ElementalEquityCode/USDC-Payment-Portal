@@ -1,5 +1,7 @@
+@import '../../App.css';
+
 .todaysDate {
-    color: rgba(26,26,26,.7);
+    color: var(--primary-header-color);
     text-align: center;
     margin: 0;
 }

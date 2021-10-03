@@ -6,16 +6,32 @@ class UIModeSwitch extends React.Component {
     super();
 
     this.state = {
-      mode: 'light'
+      mode: ''
     };
+  }
+
+  componentDidMount() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.setState({
+        mode: 'dark'
+      });
+    } else {
+      this.setState({
+        mode: 'light'
+      });
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+      this.setState({
+        mode: event.matches ? 'dark' : 'light'
+      });
+    });
   }
 
   handleUIModeSwitched = () => {
     const { mode } = this.state;
 
-    this.setState({
-      mode: mode === 'light' ? 'dark' : 'light'
-    });
+    console.log(mode);
   }
 
   render() {
@@ -33,12 +49,8 @@ class UIModeSwitch extends React.Component {
           tabIndex={0}
         >
           <div
-            className={mode === 'light' ? `${styles.switchContainer}` : `${styles.switchContainer} ${styles.darkSwitchContainer}`}
+            className={mode === 'light' ? `${styles.switch}` : `${styles.switch} ${styles.darkSwitch}`}
           >
-            <div
-              className={styles.switch}
-            >
-            </div>
           </div>
         </div>
         <span

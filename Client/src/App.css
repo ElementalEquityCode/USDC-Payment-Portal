@@ -1,5 +1,26 @@
+:root {
+  --primary-color: rgb(148, 136, 247);
+  --secondary-color: rgb(203,223,240);
+  --elevated-background-color: rgb(255, 255, 255);
+  --secondary-elevated-background-color: #f2f4f8;
+  --primary-header-color: rgba(26, 26, 26, .7);
+  --label-color: rgb(65, 71, 78);
+  --input-color: rgba(26, 26, 26, 0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: rgb(71, 65, 123);
+    --elevated-background-color: rgb(45, 45, 45);
+    --secondary-elevated-background-color: rgb(70, 70, 70);
+    --primary-header-color: rgb(231, 232, 235);
+    --label-color: #c4c8cc;
+    --input-color: white;
+  }
+}
+
 html {
-  background-color: rgba(84,51,255,.6);
+  background-color: var(--primary-color);
 }
 
 * {
@@ -24,7 +45,7 @@ p {
 
 input {
   font-size: 1rem;
-  color: rgba(26, 26, 26, 0.9);
+  color: var(--input-color);
   font-weight: 300;
 }
 

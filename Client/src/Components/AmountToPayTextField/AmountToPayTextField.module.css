@@ -1,3 +1,5 @@
+@import '../../App.css';
+
 .container {
     height: 53px;
 }
@@ -28,12 +30,12 @@
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
     align-content: center;
-    background-color: #f2f4f8;
+    background-color: var(--secondary-elevated-background-color);
     height: 100%;
 }
 
 .dollarSign {
-    color: rgba(26,26,26,.7);
+    color: var(--primary-header-color);
     display: inline-block;
     width: 100%;
     padding: 0 10px;
@@ -51,6 +53,7 @@
     outline: none;
     border: none;
     padding: 0 10px;
+    background-color: var(--elevated-background-color);
 }
 
 .visible {

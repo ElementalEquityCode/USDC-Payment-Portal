@@ -1,3 +1,5 @@
+@import '../../App.css';
+
 .overallGrid {
     display: flex;
     align-items: center;
@@ -18,7 +20,7 @@
 .paymentForm {
     width: 60%;
     margin-right: 2.5%;
-    background-color: white;
+    background-color: var(--elevated-background-color);
     box-shadow: 0 0 0 1px hsl(0deg 0% 69% / 20%), 0 15px 35px 0 rgb(49 49 93 / 25%), 0 5px 15px 0 rgb(0 0 0 / 15%);
     padding: 10px;
     margin-top: 20px;
