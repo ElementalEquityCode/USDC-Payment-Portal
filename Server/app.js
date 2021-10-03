@@ -4,12 +4,11 @@ const enforce = require('express-sslify')
 const appRouter = require('./Routes/AppRoute');
 const publicKeyRouter = require('./Routes/PublicKeyRoute');
 const paymentRouter = require('./Routes/PaymentRoute');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8085;
 
-// app.use(enforce.HTTPS({trustProtoHeader: true}));
+app.use(enforce.HTTPS({trustProtoHeader: true}));
 app.use((req, res, next) => {
-  console.log('here');
-  res.set('Access-Control-Allow-Origin', 'https://test.iredullc.com');
+  res.set('Access-Control-Allow-Origin', 'http://test.iredullc.com');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });

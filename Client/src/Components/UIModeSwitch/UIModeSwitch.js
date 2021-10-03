@@ -11,27 +11,46 @@ class UIModeSwitch extends React.Component {
   }
 
   componentDidMount() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      this.setState({
-        mode: 'dark'
+    if (!localStorage.getItem('color-scheme')) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        this.setState({
+          mode: 'dark'
+        }, () => {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        });
+      } else {
+        this.setState({
+          mode: 'light'
+        }, () => {
+          document.documentElement.setAttribute('data-theme', 'light');
+        });
+      }
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+        this.setState({
+          mode: event.matches ? 'dark' : 'light'
+        }, () => {
+          document.documentElement.setAttribute('data-theme', event.matches ? 'dark' : 'light');
+        });
       });
     } else {
       this.setState({
-        mode: 'light'
+        mode: localStorage.getItem('color-scheme')
+      }, () => {
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('color-scheme'));
       });
     }
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-      this.setState({
-        mode: event.matches ? 'dark' : 'light'
-      });
-    });
   }
 
   handleUIModeSwitched = () => {
     const { mode } = this.state;
 
-    console.log(mode);
+    this.setState({
+      mode: mode === 'dark' ? 'light' : 'dark'
+    }, () => {
+      localStorage.setItem('color-scheme', mode === 'dark' ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', mode === 'dark' ? 'light' : 'dark');
+    });
   }
 
   render() {

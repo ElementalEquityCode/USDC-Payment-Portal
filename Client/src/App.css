@@ -8,15 +8,13 @@
   --input-color: rgba(26, 26, 26, 0.9);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary-color: rgb(71, 65, 123);
-    --elevated-background-color: rgb(45, 45, 45);
-    --secondary-elevated-background-color: rgb(70, 70, 70);
-    --primary-header-color: rgb(231, 232, 235);
-    --label-color: #c4c8cc;
-    --input-color: white;
-  }
+[data-theme="dark"] {
+  --primary-color: rgb(71, 65, 123);
+  --elevated-background-color: rgb(45, 45, 45);
+  --secondary-elevated-background-color: rgb(70, 70, 70);
+  --primary-header-color: rgb(231, 232, 235);
+  --label-color: #c4c8cc;
+  --input-color: white;
 }
 
 html {
