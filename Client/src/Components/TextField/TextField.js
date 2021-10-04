@@ -19,6 +19,30 @@ class TextField extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    const { type } = this.props;
+
+    if (type === 'first-name') {
+      if (localStorage.getItem('first-name')) {
+        this.setState({
+          value: localStorage.getItem('first-name')
+        });
+      }
+    } else if (type === 'last-name') {
+      if (localStorage.getItem('last-name')) {
+        this.setState({
+          value: localStorage.getItem('last-name')
+        });
+      }
+    } else if (type === 'email') {
+      if (localStorage.getItem('email')) {
+        this.setState({
+          value: localStorage.getItem('email')
+        });
+      }
+    }
+  }
+
   prettyCardNumber = (cardNumber) => {
     const card = creditCardType.getTypeInfo(CardType.VISA);
 
@@ -92,7 +116,7 @@ class TextField extends React.Component {
     const { type } = this.props;
     const { value } = this.state;
 
-    if (type === 'name') {
+    if (type === 'first-name' || type === 'last-name') {
       this.setState({
         isInErrorState: value.trim() === '',
         isFocused: false

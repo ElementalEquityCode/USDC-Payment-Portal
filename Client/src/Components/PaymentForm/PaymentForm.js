@@ -60,6 +60,7 @@ class PaymentForm extends React.Component {
         value: '',
         isInErrorState: false
       },
+      rememberMe: false,
       isFormComplete: false,
       isPaymentProcessing: false,
       confirmationPage: {
@@ -223,6 +224,14 @@ class PaymentForm extends React.Component {
         }
       });
     }
+  }
+
+  handleRemeberMeChecked = (bool) => {
+    console.log(bool);
+
+    this.setState({
+      rememberMe: bool
+    });
   }
 
   checkIfFormIsComplete = () => {
@@ -418,6 +427,22 @@ class PaymentForm extends React.Component {
           this.pollEndpoint(paymentEndpoint);
         }, 2000);
       } else if (response.data.status === 'confirmed' || response.data.state === 'success') {
+        const { rememberMe } = this.state;
+
+        if (rememberMe) {
+          const { firstName } = this.state;
+          const { lastName } = this.state;
+          const { email } = this.state;
+
+          localStorage.setItem('first-name', firstName.value);
+          localStorage.setItem('last-name', lastName.value);
+          localStorage.setItem('email', email.value);
+        } else {
+          localStorage.removeItem('first-name');
+          localStorage.removeItem('last-name');
+          localStorage.removeItem('email');
+        }
+
         this.performViewWillDisappearAnimation();
 
         setTimeout(() => {
@@ -515,6 +540,23 @@ class PaymentForm extends React.Component {
   }
 
   componentDidMount = () => {
+    if (localStorage.getItem('first-name') && localStorage.getItem('last-name') && localStorage.getItem('email')) {
+      this.setState({
+        firstName: {
+          value: localStorage.getItem('first-name'),
+          isInErrorState: false
+        },
+        lastName: {
+          value: localStorage.getItem('last-name'),
+          isInErrorState: false
+        },
+        email: {
+          value: localStorage.getItem('email'),
+          isInErrorState: false
+        }
+      });
+    }
+
     axios.get('/key').then((response) => {
       this.setState({
         key: {
@@ -611,13 +653,13 @@ class PaymentForm extends React.Component {
                 />
               </Grid>
               <TextField
-                type="name"
+                type="first-name"
                 placeholder="First Name"
                 onChangeEvent={this.handleFirstNameChanged}
                 shouldDisplayError={firstName.isInErrorState}
               />
               <TextField
-                type="name"
+                type="last-name"
                 placeholder="Last Name"
                 onChangeEvent={this.handleLastNameChanged}
                 shouldDisplayError={lastName.isInErrorState}
@@ -676,6 +718,7 @@ class PaymentForm extends React.Component {
               name: `${firstName.value} ${lastName.value}`,
               handleAmountEnteredChanged: this.handleAmountEnteredChanged,
               amountEntered: amountEntered.value,
+              rememberMeHandler: this.handleRemeberMeChecked,
               isFormComplete,
               shouldDisplayAmountEnteredError: amountEntered.isInErrorState,
               formCompletionHandler: this.formCompletionHandler,

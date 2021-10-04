@@ -3,6 +3,7 @@ const paymentRouter = express.Router();
 const axios = require('axios');
 const { request } = require('express');
 const { v4: UUID } = require('uuid');
+require('dotenv').config();
 
 paymentRouter.use(express.json({ type:'application/json' }));
 
@@ -11,7 +12,7 @@ paymentRouter.get('/payment-status/:payment_id', (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer QVBJX0tFWTpiY2E4YWNkM2VkYjExZWUwMDEyZWViM2Y3Nzg4NWRmNDozZjczYmE4NWIxNmU4N2RjMTI2MTEzOThjYjBkYmU0Nw'
+      'Authorization': `Bearer ${process.env.CIRCLE_API_KEY}`
     }
   };
 
@@ -56,7 +57,7 @@ paymentRouter.post('/create-card-payment', (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer QVBJX0tFWTpiY2E4YWNkM2VkYjExZWUwMDEyZWViM2Y3Nzg4NWRmNDozZjczYmE4NWIxNmU4N2RjMTI2MTEzOThjYjBkYmU0Nw'
+      'Authorization': `Bearer ${process.env.CIRCLE_API_KEY}`
     }
   };
 

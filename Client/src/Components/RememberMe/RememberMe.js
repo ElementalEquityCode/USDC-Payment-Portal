@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './RememberMe.module.css';
+import ValuesContext from '../../Contexts/ValuesContext';
 import SectionLabel from '../SectionLabel/SectionLabel';
 
 const RememberMe = () => {
+  const { rememberMeHandler } = useContext(ValuesContext);
   const [isChecked, setChecked] = useState(false);
 
-  console.log(isChecked);
-  console.log(setChecked);
+  useEffect(() => {
+    if (!isChecked && localStorage.getItem('first-name') && localStorage.getItem('last-name') && localStorage.getItem('email')) {
+      setChecked(true);
+      rememberMeHandler(true);
+    }
+  }, []);
 
   return (
     <div
       className={styles.remembeMeContainer}
       onClick={() => {
+        rememberMeHandler(!isChecked);
         setChecked(!isChecked);
       }}
       role="button"
       tabIndex={0}
       onKeyDown={(event) => {
         if (event.code.toLocaleLowerCase() === 'enter') {
+          rememberMeHandler(!isChecked);
           setChecked(!isChecked);
         }
       }}

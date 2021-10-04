@@ -1,5 +1,6 @@
 const express = require('express');
 const keyRouter = express.Router();
+require('dotenv').config()
 
 let publicKey = '';
 
@@ -12,7 +13,7 @@ const getPublicKey = () => {
   const headers = {
     headers: {
       Accept: 'application/json',
-      Authorization: 'Bearer QVBJX0tFWTpiY2E4YWNkM2VkYjExZWUwMDEyZWViM2Y3Nzg4NWRmNDozZjczYmE4NWIxNmU4N2RjMTI2MTEzOThjYjBkYmU0Nw'
+      Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`
     }
   };
 
