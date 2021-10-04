@@ -47,10 +47,17 @@ const GeneralActionButton = (props) => {
         }
       }}
       onMouseLeave={() => {
+        if (ref.current) {
+          ref.current.blur();
+        }
         setClickedState(false);
       }}
       onClick={formCompletionHandler}
-      onKeyDown={formCompletionHandler}
+      onKeyDown={(event) => {
+        if (event.code.toLowerCase() === 'enter') {
+          formCompletionHandler();
+        }
+      }}
       role="button"
       tabIndex={0}
       ref={ref}

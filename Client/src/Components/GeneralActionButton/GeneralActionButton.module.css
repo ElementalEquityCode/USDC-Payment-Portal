@@ -14,11 +14,11 @@
 }
 
 .generalActionButtonContainer:focus {
-    background-color: rgb(197, 217, 235);
+    background-color: var(--secondary-color);
 }
 
 .clicked {
-    background-color: rgb(197, 217, 235);
+    background-color: var(--secondary-color);
 }
 
 .generalActionButton {
