@@ -29,6 +29,10 @@ class AmountToPayTextField extends React.Component {
   }
 
   handleAmountToPayTextFieldSetFocused = () => {
+    if (this.amountToPayTextFieldRef.current) {
+      this.amountToPayTextFieldRef.current.focus();
+    }
+
     this.setState({
       isFocused: true
     });
@@ -99,6 +103,7 @@ class AmountToPayTextField extends React.Component {
                     }
                   }
                 }}
+                onFocus={this.handleAmountToPayTextFieldSetFocused}
                 onKeyDown={this.handleAmountToPayTextFieldContainerClicked}
                 role="textbox"
                 tabIndex={0}
