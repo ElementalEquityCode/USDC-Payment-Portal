@@ -358,12 +358,12 @@ class PaymentForm extends React.Component {
       encryptedData: '',
       billingDetails: {
         name: `${firstName.value} ${lastName.value}`,
-        city: 'Doral',
+        city: 'Miami',
         country: 'US',
-        line1: '11133 NW 71st Ter',
+        line1: '5600 NW 72nd Ave',
         district: 'FL',
-        postalCode: '33178'
-      }, // Fix this
+        postalCode: '33166'
+      }, // Temp
       expMonth: parseInt(cardExpiryMonth, 10),
       expYear: parseInt(cardExpiryYear, 10),
       metadata: {
@@ -399,14 +399,8 @@ class PaymentForm extends React.Component {
         .then((response) => {
           if (response.data.status === 'pending') {
             this.pollEndpoint(response.data.id);
-          } else if (response.data.status === 'confirmed' || response.data.status === 'success') {
-            this.setState({
-              isPaymentProcessing: false
-            });
-            console.log('confirmed from here'); // Fix this
           }
-        })
-        .catch(({ response }) => {
+        }).catch(({ response }) => {
           this.setState({
             isPaymentProcessing: false,
             apiError: {

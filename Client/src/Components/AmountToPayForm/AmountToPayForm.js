@@ -5,6 +5,7 @@ import Grid from '../Grid/Grid';
 import AmountToPayTextField from '../AmountToPayTextField/AmountToPayTextField';
 import SectionLabel from '../SectionLabel/SectionLabel';
 import PaymentFromTo from '../PaymentFromTo/PaymentFromTo';
+import RememberMe from '../RememberMe/RememberMe';
 import GeneralActionButton from '../GeneralActionButton/GeneralActionButton';
 import PaymentResponseError from '../PaymentResponseError/PaymentResponseError';
 
@@ -27,6 +28,7 @@ const AmountToPayForm = () => {
         <PaymentFromTo
           to="Ian Robinson"
         />
+        <RememberMe />
         <GeneralActionButton>
           Enter Amount to Pay
         </GeneralActionButton>
